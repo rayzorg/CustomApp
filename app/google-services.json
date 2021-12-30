@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "683932282569",
+    "project_id": "chatappcustomandroid",
+    "storage_bucket": "chatappcustomandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683932282569:android:e50234e0ad3ec1953e2718",
+        "android_client_info": {
+          "package_name": "com.example.mainactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683932282569-19jj3c5nr0ag9b77hdaimljs70g04q2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFSV1Fb8KZM1Q6KVneBqEO_07bnMfruCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683932282569-19jj3c5nr0ag9b77hdaimljs70g04q2t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
