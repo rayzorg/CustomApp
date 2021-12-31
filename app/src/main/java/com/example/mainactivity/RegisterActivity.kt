@@ -23,15 +23,18 @@ import android.os.Build
 
 import android.R.attr.data
 import android.net.Uri
+import com.google.firebase.storage.FirebaseStorage
 import java.io.IOException
+import java.util.*
 
 
 class RegisterActivity : AppCompatActivity() {
+    var selectedImage: Uri? = null
     var launchSomeActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
             val uri= data?.data
-            val selectedImage: Uri? = data?.data
+            selectedImage  = data?.data
             try {
                 if (Build.VERSION.SDK_INT < 29) {
                     val bitmap = MediaStore.Images.Media.getBitmap(
@@ -97,19 +100,37 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this,"Gelieve alle velden in te vullen",Toast.LENGTH_SHORT).show()
             return
         }
-        Log.d("MainActivity","email is"+email)
-        Log.d("MainActivity","password is"+password)
+        Log.d("RegisterActivity","email is"+email)
+        Log.d("RegisterActivity","password is"+password)
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener {
                 if(!it.isSuccessful) return@addOnCompleteListener
 
-                Log.d("Main","User created: ${it.result.user?.uid}")
+                Log.d("RegisterActivity","User created: ${it.result.user?.uid}")
+                uploadImage()
 
             }
             .addOnFailureListener {
-                Log.d("Main","Niet gelukt om gebruiker aan te maken :${it.message} ")
+                Log.d("RegisterActivity","Niet gelukt om gebruiker aan te maken :${it.message} ")
                 Toast.makeText(this,"Niet gelukt om gebruiker aan te maken :${it.message} ",Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun uploadImage() {
+        if(selectedImage == null)return
+
+
+        val filename=UUID.randomUUID().toString()
+       val ref= FirebaseStorage.getInstance().getReference("/images/${filename}")
+
+        ref.putFile(selectedImage!!)
+            .addOnSuccessListener {
+                Log.d("RegisterActivity","succesfully uploade image: ${it.metadata?.path}")
+                ref.downloadUrl.addOnSuccessListener {
+                    it.toString()
+                    Log.d("RegisterActivity","file location: $it")
+                }
             }
     }
 }

@@ -32,7 +32,7 @@ class LoginActivity :AppCompatActivity(){
             .addOnCompleteListener {
                 if(!it.isSuccessful) return@addOnCompleteListener
 
-                Log.d("Main","User ingelogd: ${it.result.user?.uid}")
+                Log.d("LoginActivity","User ingelogd: ${it.result.user?.uid}")
             }
             .addOnFailureListener{
                 Toast.makeText(this,"Niet gelukt om in te loggen :${it.message} ",
