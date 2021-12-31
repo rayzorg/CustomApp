@@ -48,4 +48,15 @@
         app:layout_constraintEnd_toEndOf="@+id/passwordLogin"
         app:layout_constraintStart_toStartOf="@+id/passwordLogin"
         app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
+
+    <TextView
+        android:id="@+id/noAccountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Nog geen account?"
+        android:textColor="#FBF9F9"
+        app:layout_constraintEnd_toEndOf="@+id/buttonInloggen"
+        app:layout_constraintStart_toStartOf="@+id/buttonInloggen"
+        app:layout_constraintTop_toBottomOf="@+id/buttonInloggen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

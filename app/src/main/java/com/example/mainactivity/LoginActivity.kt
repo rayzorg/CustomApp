@@ -18,6 +18,9 @@ class LoginActivity :AppCompatActivity(){
            inloggen()
         }
 
+        noAccountTextView.setOnClickListener {
+            finish()
+        }
     }
 
     private fun inloggen (){

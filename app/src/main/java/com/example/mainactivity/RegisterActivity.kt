@@ -23,6 +23,7 @@ import android.os.Build
 
 import android.R.attr.data
 import android.net.Uri
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.IOException
 import java.util.*
@@ -80,6 +81,7 @@ class RegisterActivity : AppCompatActivity() {
             Log.d("Main","try to show selector")
             openYourActivity()
         }
+
     }
 
     fun openYourActivity() {
@@ -116,7 +118,6 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this,"Niet gelukt om gebruiker aan te maken :${it.message} ",Toast.LENGTH_SHORT).show()
             }
     }
-
     private fun uploadImage() {
         if(selectedImage == null)return
 
@@ -126,11 +127,34 @@ class RegisterActivity : AppCompatActivity() {
 
         ref.putFile(selectedImage!!)
             .addOnSuccessListener {
-                Log.d("RegisterActivity","succesfully uploade image: ${it.metadata?.path}")
+                Toast.makeText(this,"succesfully uploade image: ${it.metadata?.path}",Toast.LENGTH_SHORT).show()
                 ref.downloadUrl.addOnSuccessListener {
-                    it.toString()
-                    Log.d("RegisterActivity","file location: $it")
+                    Toast.makeText(this,"file location: $it",Toast.LENGTH_SHORT).show()
+                    saveUserToDatabase(it.toString())
                 }
+            }
+            .addOnFailureListener{
+                Toast.makeText(this,"failed uploading image ",Toast.LENGTH_SHORT).show()
+            }
+    }
+    private fun saveUserToDatabase(imageUrl:String) {
+      val uid= FirebaseAuth.getInstance().uid
+        val ref= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/users/${uid}")
+
+        val user=User(uid!!,usernameRegister.text.toString(),imageUrl)
+        ref.setValue(user)
+            .addOnSuccessListener {
+                Toast.makeText(this,"save user to database",Toast.LENGTH_SHORT).show()
+
+
+                val intent=Intent(this,MessagesActivity::class.java)
+                intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+            .addOnFailureListener{
+                Toast.makeText(this,"save user failed",Toast.LENGTH_SHORT).show()
             }
     }
 }
+
+class User(val uid:String,val username:String,val profileImageUrl: String)
