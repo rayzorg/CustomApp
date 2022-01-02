@@ -73,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val toolbar: Toolbar =findViewById(R.id.toolbar_register)
         setSupportActionBar(toolbar)
-        supportActionBar!!.title=""
+        supportActionBar!!.title="Registreren"
 
 
         buttonRegister.setOnClickListener {
@@ -143,10 +143,11 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
     private fun saveUserToDatabase(imageUrl:String) {
+        val status="offline"
       val uid= FirebaseAuth.getInstance().uid
         val ref= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/users/${uid}")
 
-        val user=User(uid!!,usernameRegister.text.toString(),imageUrl)
+        val user=User(uid!!,usernameRegister.text.toString(),imageUrl,usernameRegister.text.toString().lowercase(),status)
         ref.setValue(user)
             .addOnSuccessListener {
                 Toast.makeText(this,"save user to database",Toast.LENGTH_SHORT).show()
@@ -162,4 +163,4 @@ class RegisterActivity : AppCompatActivity() {
     }
 }
 
-class User(val uid:String,val username:String,val profileImageUrl: String)
+class User(val uid:String,val username:String,val profileImageUrl: String,val search:String,val status:String)

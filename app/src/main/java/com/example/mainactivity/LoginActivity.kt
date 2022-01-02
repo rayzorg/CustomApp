@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -13,6 +14,15 @@ class LoginActivity :AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val toolbar: Toolbar =findViewById(R.id.toolbar_login)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.title="Inloggen"
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            val intent=Intent(this@LoginActivity,RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
 
         buttonInloggen.setOnClickListener {

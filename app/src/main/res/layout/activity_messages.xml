@@ -31,12 +31,13 @@
 
                 </de.hdodenhof.circleimageview.CircleImageView>
                 <TextView
+                    android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="naam"
                     android:textSize="18sp"
                     android:layout_marginLeft="26dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textStyle="bold"/>
 
             </androidx.appcompat.widget.Toolbar>
@@ -45,8 +46,9 @@
              android:id="@+id/tab_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-             android:background="#03A9F4"
-          app:tabIndicatorColor="@android:color/white">
+             android:background="#88C0ED"
+          app:tabIndicatorColor="@android:color/black"
+             app:tabTextColor="@color/black">
 
     </com.google.android.material.tabs.TabLayout>
 
