@@ -16,7 +16,7 @@
 
     <style name="Theme.Design.NoActionBarClean" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#ED1A61</item>
+        <item name="colorPrimary">#88C0ED</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
