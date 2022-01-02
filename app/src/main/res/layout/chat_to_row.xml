@@ -10,15 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_text"
-        android:maxWidth="240dp"
 
+        android:maxWidth="240dp"
         android:padding="16dp"
         android:text="TextViewfgdrfgdfgggggggg dfggggggggggggg gfdddddddddddddddddddddddddd"
         app:layout_constraintEnd_toStartOf="@+id/imageViewTo"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewTo"
         android:layout_width="50dp"
         android:layout_height="50dp"

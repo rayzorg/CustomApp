@@ -23,11 +23,17 @@ import kotlinx.android.synthetic.main.activity_messages.*
 
 
 class MessagesActivity : AppCompatActivity() {
+    companion object {
+        var currentUser:User? = null
+    }
+
     var refUsers:DatabaseReference?=null
     var firebaseUser:FirebaseUser? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.mainactivity.R.layout.activity_messages)
+
+        fetchCurrentUser()
 
         firebaseUser=FirebaseAuth.getInstance().currentUser
         refUsers=FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users").child(firebaseUser!!.uid)
@@ -57,7 +63,7 @@ class MessagesActivity : AppCompatActivity() {
             }
         }.attach()
 
-       verifyUserLoggedIn()
+        verifyUserLoggedIn()
 
         refUsers!!.addValueEventListener((object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -77,7 +83,24 @@ class MessagesActivity : AppCompatActivity() {
         }))
     }
 
-   private fun verifyUserLoggedIn(){
+    private fun fetchCurrentUser() {
+        val uid=FirebaseAuth.getInstance().uid
+        val ref=FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/users/${uid}")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                currentUser=p0.getValue(User::class.java)
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
+    private fun verifyUserLoggedIn(){
        val uid = FirebaseAuth.getInstance().uid
        if (uid == null) {
            val intent = Intent(this, RegisterActivity::class.java)
@@ -85,7 +108,6 @@ class MessagesActivity : AppCompatActivity() {
            startActivity(intent)
        }
    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
 
