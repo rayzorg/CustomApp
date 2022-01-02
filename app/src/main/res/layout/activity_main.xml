@@ -7,26 +7,45 @@
     android:background="#03A9F4"
     tools:context=".RegisterActivity" >
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_register"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize" >
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <Button
         android:id="@+id/pictureButton"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/rounded_photo"
         android:text="Foto kiezen"
         app:backgroundTint="#88C0ED"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutRegister" />
 
     <EditText
         android:id="@+id/usernameRegister"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="112dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/rounded_text"
         android:ems="10"
@@ -96,8 +115,10 @@
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="@+id/pictureButton"
         app:layout_constraintEnd_toEndOf="@+id/pictureButton"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="@+id/pictureButton"
-        app:layout_constraintTop_toTopOf="@+id/pictureButton">
+        app:layout_constraintTop_toTopOf="@+id/pictureButton"
+        app:layout_constraintVertical_bias="1.0">
 
     </de.hdodenhof.circleimageview.CircleImageView>
 </androidx.constraintlayout.widget.ConstraintLayout>

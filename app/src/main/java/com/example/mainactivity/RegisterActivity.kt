@@ -23,6 +23,7 @@ import android.os.Build
 
 import android.R.attr.data
 import android.net.Uri
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.IOException
@@ -69,6 +70,10 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        val toolbar: Toolbar =findViewById(R.id.toolbar_register)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.title=""
 
 
         buttonRegister.setOnClickListener {
