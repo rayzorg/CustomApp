@@ -12,10 +12,13 @@ import com.example.mainactivity.adapter.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import android.R
+import android.graphics.ImageDecoder
+import androidx.core.net.toUri
 import com.example.mainactivity.models.User
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_messages.*
 
 
@@ -61,14 +64,14 @@ class MessagesActivity : AppCompatActivity() {
                 if(snapshot.exists()){
 
                     val user:User?=snapshot.getValue(User::class.java)
-                    println(user!!.getUsername())
                     username.text=user!!.getUsername()
-                    Picasso.with(this@MessagesActivity).load(user.getProfileImage()).into(profile_image)
+
+                    Picasso.with(this@MessagesActivity).load(user!!.getProfileImageUrl()).into(profile_image)
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+               
             }
 
         }))

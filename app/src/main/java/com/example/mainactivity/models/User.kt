@@ -34,10 +34,10 @@ class User {
     fun setUsername(username: String){
         this.username=username
     }
-    fun getProfileImage():String?{
+    fun getProfileImageUrl():String?{
         return profileImageUrl
     }
-    fun setProfileImage(profileImageUrl: String){
+    fun setProfileImageUrl(profileImageUrl: String){
         this.profileImageUrl=profileImageUrl
     }
     fun getStatus():String?{
