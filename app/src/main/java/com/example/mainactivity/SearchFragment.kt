@@ -1,19 +1,90 @@
 package com.example.mainactivity
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Contacts.SettingsColumns.KEY
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
+import com.example.mainactivity.models.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Item
+import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.activity_messages.*
+import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.user_search_item_layout.view.*
 
 class SearchFragment : Fragment() {
-
+    private var recyclerView: RecyclerView? = null
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+       val view:View=  inflater.inflate(R.layout.fragment_search, container, false)
+
+        fetchUsers()
+
+        return view
     }
+    companion object{
+     val USER_KEY="USER_KEY"
+}
+    private fun fetchUsers() {
+        var firebaseUserId=FirebaseAuth.getInstance().currentUser!!.uid
+        val refUsers= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users")
+        refUsers.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                val adapter=GroupAdapter<ViewHolder>()
+                for (snapshot in p0.children){
+                    val user:User?=snapshot.getValue(User::class.java)
+                    if(!(user!!.uid).equals(firebaseUserId)){
+                        adapter.add(UserItem(user))
+                    }
+                }
+                adapter.setOnItemClickListener { item, view ->
+                    val userItem=item as UserItem
+                    val intent= Intent(view.context,ChatLogActivity::class.java)
+                    intent.putExtra(USER_KEY,userItem.user)
+
+                    startActivity(intent)
+
+                }
+                recyclerView= view?.findViewById(R.id.searchList)
+                recyclerView!!.adapter=adapter
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+}
+class UserItem(val user:User): Item<ViewHolder>(){
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+
+        viewHolder.itemView.username_user.text=user.username
+        Picasso.with(viewHolder.itemView.username_user.context).load(user!!.profileImageUrl).into(viewHolder.itemView.profile_image_user)
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.user_search_item_layout
+    }
+
 }

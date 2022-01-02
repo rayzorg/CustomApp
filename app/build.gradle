@@ -8,6 +8,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+androidExtensions{
+    experimental = true
+}
 android {
     compileSdk 31
 
@@ -47,6 +50,8 @@ android {
 }
 
 dependencies {
+    implementation "com.xwray:groupie:2.1.0"
+
 
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0'

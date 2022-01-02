@@ -49,10 +49,10 @@ class MessagesActivity : AppCompatActivity() {
                     tab.text="Chats"
                 }
                 1->{
-                    tab.text="Search"
+                    tab.text="Zoeken"
                 }
                 2->{
-                    tab.text="Settings"
+                    tab.text="Instellingen"
                 }
             }
         }.attach()
@@ -64,9 +64,9 @@ class MessagesActivity : AppCompatActivity() {
                 if(snapshot.exists()){
 
                     val user:User?=snapshot.getValue(User::class.java)
-                    username.text=user!!.getUsername()
+                    username.text=user!!.username
 
-                    Picasso.with(this@MessagesActivity).load(user!!.getProfileImageUrl()).into(profile_image)
+                    Picasso.with(this@MessagesActivity).load(user!!.profileImageUrl).into(profile_image)
                 }
             }
 
