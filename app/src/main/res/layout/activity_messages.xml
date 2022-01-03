@@ -30,15 +30,7 @@
                     android:tint="@color/white">
 
                 </de.hdodenhof.circleimageview.CircleImageView>
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="naam"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="26dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
+
 
             </androidx.appcompat.widget.Toolbar>
 

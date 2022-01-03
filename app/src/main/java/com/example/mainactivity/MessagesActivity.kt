@@ -70,7 +70,7 @@ class MessagesActivity : AppCompatActivity() {
                 if(snapshot.exists()){
 
                     val user:User?=snapshot.getValue(User::class.java)
-                    username.text=user!!.username
+
 
                     Picasso.with(this@MessagesActivity).load(user!!.profileImageUrl).into(profile_image)
                 }
@@ -81,6 +81,13 @@ class MessagesActivity : AppCompatActivity() {
             }
 
         }))
+
+
+        profile_image.setOnClickListener {
+            tab_layout.getTabAt(2)?.select()
+
+        }
+
     }
 
     private fun fetchCurrentUser() {
