@@ -44,7 +44,6 @@ class ChatLogActivity : AppCompatActivity() {
 
         toUser=intent.getParcelableExtra<User>(SearchFragment.USER_KEY)
 
-
         supportActionBar!!.title= toUser?.username
         listenForMessages()
         button_send.setOnClickListener {
@@ -58,12 +57,15 @@ class ChatLogActivity : AppCompatActivity() {
 
         val fromId=FirebaseAuth.getInstance().uid
         val toId=toUser?.uid
+
         val messages=FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/user-messages/${fromId}/${toId}")
         messages.addChildEventListener(object:ChildEventListener{
             override fun onChildAdded(p0: DataSnapshot, previousChildName: String?) {
                val message=p0.getValue(ChatMessage::class.java)
                 if(message != null){
 
+
+                    println("fromid"+message.text)
                     if(message.fromId==FirebaseAuth.getInstance().uid){
                         val currentUser=MessagesActivity.currentUser
                         adapter.add(ChatFromItem(message.text,currentUser!!))
@@ -115,6 +117,12 @@ class ChatLogActivity : AppCompatActivity() {
                 recyclerview_chatlog.scrollToPosition(adapter.itemCount -1)
             }
         refToMessages.setValue(chatMessage)
+
+        val latestrefMessages= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/latest-messages/${fromId}/${toId}")
+        latestrefMessages.setValue(chatMessage)
+        val latestrefToMessages= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/latest-messages/${toId}/${fromId}")
+        latestrefToMessages.setValue(chatMessage)
+
 
     }
     companion object{
