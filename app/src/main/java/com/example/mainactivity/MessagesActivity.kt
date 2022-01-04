@@ -69,22 +69,24 @@ class MessagesActivity : AppCompatActivity() {
 
 
 
-        refUsers!!.addValueEventListener((object:ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
+       if(firebaseUser != null){
+           refUsers!!.addValueEventListener((object:ValueEventListener{
+               override fun onDataChange(snapshot: DataSnapshot) {
+                   if(snapshot.exists()){
 
-                    val user:User?=snapshot.getValue(User::class.java)
+                       val user:User?=snapshot.getValue(User::class.java)
 
 
-                    Picasso.with(this@MessagesActivity).load(user!!.profileImageUrl).into(profile_image)
-                }
-            }
+                       Picasso.with(this@MessagesActivity).load(user!!.profileImageUrl).into(profile_image)
+                   }
+               }
 
-            override fun onCancelled(error: DatabaseError) {
-               
-            }
+               override fun onCancelled(error: DatabaseError) {
 
-        }))
+               }
+
+           }))
+       }
 
 
         profile_image.setOnClickListener {
