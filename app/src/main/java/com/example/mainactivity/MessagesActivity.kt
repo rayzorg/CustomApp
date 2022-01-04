@@ -31,12 +31,16 @@ class MessagesActivity : AppCompatActivity() {
     var firebaseUser:FirebaseUser? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(com.example.mainactivity.R.layout.activity_messages)
         verifyUserLoggedIn()
         fetchCurrentUser()
 
         firebaseUser=FirebaseAuth.getInstance().currentUser
-        refUsers=FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users").child(firebaseUser!!.uid)
+        if(firebaseUser !=null){
+            refUsers=FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users").child(firebaseUser!!.uid)
+
+        }
 
         val toolbar:Toolbar=findViewById(com.example.mainactivity.R.id.toolbar_main)
         setSupportActionBar(toolbar)
@@ -113,6 +117,8 @@ class MessagesActivity : AppCompatActivity() {
            val intent = Intent(this, RegisterActivity::class.java)
            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
            startActivity(intent)
+           finish()
+           return
        }
    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
