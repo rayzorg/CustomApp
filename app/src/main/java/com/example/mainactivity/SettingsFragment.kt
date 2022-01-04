@@ -143,20 +143,24 @@ class SettingsFragment : Fragment() {
         hashMap.put("search", editTextChangeName.text.toString())
 
 
-        if(editTextChangeName.text.isEmpty() ) {
-            Toast.makeText(view?.context,"Gelieve alle velden in te vullen",Toast.LENGTH_SHORT).show()
-            return
-        }
-        refUsers?.updateChildren(hashMap as Map<String, Any>)?.addOnSuccessListener {
+        if(!editTextChangeName.text.isEmpty() ) {
+            refUsers?.updateChildren(hashMap as Map<String, Any>)?.addOnSuccessListener {
 
-            Toast.makeText(view?.context,"user updated",Toast.LENGTH_SHORT).show()
+                Toast.makeText(view?.context,"Naam geupdate",Toast.LENGTH_SHORT).show()
+            }
+        }else{
+            Toast.makeText(view?.context,"Geen naam wijzigingen",Toast.LENGTH_SHORT).show()
         }
+
         uploadImage()
 
 
     }
     private fun uploadImage() {
-        if(selectedImage == null)return
+        if(selectedImage == null){
+            Toast.makeText(view?.context,"Geen ander foto gekozen ",Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val hashMap = HashMap<String, String>()
 
@@ -171,7 +175,7 @@ class SettingsFragment : Fragment() {
                 Toast.makeText(view?.context,"succesfully uploade image: ${it.metadata?.path}",Toast.LENGTH_SHORT).show()
                 ref.downloadUrl.addOnSuccessListener {
                     Toast.makeText(view?.context,"file location: $it",Toast.LENGTH_SHORT).show()
-                   // saveUserToDatabase(it.toString())
+
                     hashMap.put("profileImageUrl", it.toString())
                     refUsers?.updateChildren(hashMap as Map<String, Any>)?.addOnSuccessListener {
 
@@ -181,25 +185,6 @@ class SettingsFragment : Fragment() {
             }
             .addOnFailureListener{
                 Toast.makeText(view?.context,"failed uploading image ",Toast.LENGTH_SHORT).show()
-            }
-    }
-    private fun saveUserToDatabase(imageUrl:String) {
-        val status="offline"
-        val uid= FirebaseAuth.getInstance().uid
-        val ref= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/users/${uid}")
-
-
-        val user=User(uid!!,usernameRegister.text.toString(),imageUrl,usernameRegister.text.toString().lowercase(),status)
-
-        ref.setValue(user)
-            .addOnSuccessListener {
-                Toast.makeText(view?.context,"save user to database",Toast.LENGTH_SHORT).show()
-
-
-
-            }
-            .addOnFailureListener{
-                Toast.makeText(view?.context,"save user failed",Toast.LENGTH_SHORT).show()
             }
     }
 
