@@ -151,11 +151,16 @@ class SettingsFragment : Fragment() {
 
             Toast.makeText(view?.context,"user updated",Toast.LENGTH_SHORT).show()
         }
+        uploadImage()
 
 
     }
     private fun uploadImage() {
         if(selectedImage == null)return
+
+        val hashMap = HashMap<String, String>()
+
+
 
 
         val filename= UUID.randomUUID().toString()
@@ -166,7 +171,12 @@ class SettingsFragment : Fragment() {
                 Toast.makeText(view?.context,"succesfully uploade image: ${it.metadata?.path}",Toast.LENGTH_SHORT).show()
                 ref.downloadUrl.addOnSuccessListener {
                     Toast.makeText(view?.context,"file location: $it",Toast.LENGTH_SHORT).show()
-                    saveUserToDatabase(it.toString())
+                   // saveUserToDatabase(it.toString())
+                    hashMap.put("profileImageUrl", it.toString())
+                    refUsers?.updateChildren(hashMap as Map<String, Any>)?.addOnSuccessListener {
+
+                        Toast.makeText(view?.context,"user updated",Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             .addOnFailureListener{
