@@ -32,7 +32,7 @@ class MessagesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.mainactivity.R.layout.activity_messages)
-
+        verifyUserLoggedIn()
         fetchCurrentUser()
 
         firebaseUser=FirebaseAuth.getInstance().currentUser
@@ -63,7 +63,7 @@ class MessagesActivity : AppCompatActivity() {
             }
         }.attach()
 
-        verifyUserLoggedIn()
+
 
         refUsers!!.addValueEventListener((object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {

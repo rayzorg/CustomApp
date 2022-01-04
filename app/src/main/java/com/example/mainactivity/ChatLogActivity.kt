@@ -7,12 +7,16 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.example.mainactivity.models.ChatMessage
+import com.example.mainactivity.models.NotificationData
+import com.example.mainactivity.models.PushNotification
 import com.example.mainactivity.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
@@ -21,14 +25,20 @@ import kotlinx.android.synthetic.main.activity_chat_log.*
 import kotlinx.android.synthetic.main.chat_from_row.view.*
 import kotlinx.android.synthetic.main.chat_to_row.view.*
 import kotlinx.android.synthetic.main.user_search_item_layout.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class ChatLogActivity : AppCompatActivity() {
     val adapter=GroupAdapter<ViewHolder>()
     var toUser: User? = null
+    var firebaseUser: FirebaseUser? =null
+    var topic=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_log)
-
+        firebaseUser=FirebaseAuth.getInstance().currentUser
         recyclerview_chatlog.adapter=adapter
 
         val toolbar: Toolbar =findViewById(R.id.toolbar_chat)
@@ -113,6 +123,12 @@ class ChatLogActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 editTextSendContent.text.clear()
                 recyclerview_chatlog.scrollToPosition(adapter.itemCount -1)
+                //topic="/topics/$toId"
+              //  PushNotification(NotificationData(firebaseUser!!.displayName!!,text), topic )
+                  //  .also {
+                     //   sendNotification(it)
+                  //  }
+
             }
         refToMessages.setValue(chatMessage)
 
@@ -125,6 +141,22 @@ class ChatLogActivity : AppCompatActivity() {
     }
     companion object{
         val TAG="chatlog"
+    }
+
+    private fun sendNotification(notification :PushNotification)= CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response=RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful){
+                Toast.makeText(this@ChatLogActivity,"Response ${Gson().toJson(response)}",Toast.LENGTH_SHORT).show()
+
+            }else{
+                Toast.makeText(this@ChatLogActivity,response.errorBody().toString(),Toast.LENGTH_SHORT).show()
+
+            }
+        }catch (e:Exception){
+
+            Toast.makeText(this@ChatLogActivity,e.message,Toast.LENGTH_SHORT).show()
+        }
     }
 }
 

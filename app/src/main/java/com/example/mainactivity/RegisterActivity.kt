@@ -24,6 +24,7 @@ import android.os.Build
 import android.R.attr.data
 import android.net.Uri
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.IOException

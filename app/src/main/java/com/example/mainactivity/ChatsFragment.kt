@@ -1,26 +1,25 @@
 package com.example.mainactivity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mainactivity.firebase.FirebaseService
 import com.example.mainactivity.models.ChatMessage
-import com.example.mainactivity.models.User
 import com.example.mainactivity.views.LatestMessageRow
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.squareup.picasso.Picasso
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.chat_from_row.view.*
-import kotlinx.android.synthetic.main.latest_messages_row.view.*
 
 class ChatsFragment : Fragment() {
 
@@ -32,7 +31,12 @@ class ChatsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-       val view: View = inflater.inflate(R.layout.fragment_chats, container, false)
+       // SharedPreferences pref=getShared
+       // FirebaseService.sharedPref= context?.getSharedPreferences("sharedPref",Context.MODE_PRIVATE)
+      val view: View = inflater.inflate(R.layout.fragment_chats, container, false)
+      //  FirebaseMessaging.getInstance().token.addOnSuccessListener {
+       //     FirebaseService.token=it
+       // }
         //recyclerView= view?.findViewById(R.id.recyclerview_latest_messages)
        // val textview :TextView=view?.findViewById(R.id.textViewLatestMessage)
         //recyclerView!!.adapter=adapter
