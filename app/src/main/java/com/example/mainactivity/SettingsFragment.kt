@@ -7,12 +7,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.example.mainactivity.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -20,14 +20,17 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_messages.*
 
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.mainactivity.models.ChatMessage
+import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 import java.io.IOException
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class SettingsFragment : Fragment() {
@@ -79,6 +82,7 @@ class SettingsFragment : Fragment() {
     ): View? {
         val view:View=  inflater.inflate(R.layout.fragment_settings, container, false)
 
+
         fetchCurrentUser()
         firebaseUser= FirebaseAuth.getInstance().currentUser
         refUsers= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users").child(firebaseUser!!.uid)
@@ -112,8 +116,15 @@ class SettingsFragment : Fragment() {
         }
         val buttonChange:Button=view.findViewById(R.id.buttonChangeProfile)
 
+        buttonChange.setOnClickListener {
+            updateProfile()
+            editTextChangeName.text.clear()
+
+        }
         return view
     }
+
+
 
     private fun openYourActivity() {
 
@@ -121,6 +132,65 @@ class SettingsFragment : Fragment() {
             intent.type="image/*"
             launchSomeActivity.launch(intent)
 
+    }
+    private fun updateProfile(){
+
+
+        val hashMap = HashMap<String, String>()
+
+
+        hashMap.put("username", editTextChangeName.text.toString())
+        hashMap.put("search", editTextChangeName.text.toString())
+
+
+        if(editTextChangeName.text.isEmpty() ) {
+            Toast.makeText(view?.context,"Gelieve alle velden in te vullen",Toast.LENGTH_SHORT).show()
+            return
+        }
+        refUsers?.updateChildren(hashMap as Map<String, Any>)?.addOnSuccessListener {
+
+            Toast.makeText(view?.context,"user updated",Toast.LENGTH_SHORT).show()
+        }
+
+
+    }
+    private fun uploadImage() {
+        if(selectedImage == null)return
+
+
+        val filename= UUID.randomUUID().toString()
+        val ref= FirebaseStorage.getInstance().getReference("/images/${filename}")
+
+        ref.putFile(selectedImage!!)
+            .addOnSuccessListener {
+                Toast.makeText(view?.context,"succesfully uploade image: ${it.metadata?.path}",Toast.LENGTH_SHORT).show()
+                ref.downloadUrl.addOnSuccessListener {
+                    Toast.makeText(view?.context,"file location: $it",Toast.LENGTH_SHORT).show()
+                    saveUserToDatabase(it.toString())
+                }
+            }
+            .addOnFailureListener{
+                Toast.makeText(view?.context,"failed uploading image ",Toast.LENGTH_SHORT).show()
+            }
+    }
+    private fun saveUserToDatabase(imageUrl:String) {
+        val status="offline"
+        val uid= FirebaseAuth.getInstance().uid
+        val ref= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/users/${uid}")
+
+
+        val user=User(uid!!,usernameRegister.text.toString(),imageUrl,usernameRegister.text.toString().lowercase(),status)
+
+        ref.setValue(user)
+            .addOnSuccessListener {
+                Toast.makeText(view?.context,"save user to database",Toast.LENGTH_SHORT).show()
+
+
+
+            }
+            .addOnFailureListener{
+                Toast.makeText(view?.context,"save user failed",Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun fetchCurrentUser() {
