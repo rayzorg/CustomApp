@@ -1,4 +1,4 @@
-package com.example.mainactivity.jsonclasses
+package com.example.mainactivity.models
 
 data class NewsResponse(
     val articles: List<Article>,

@@ -1,4 +1,4 @@
-package com.example.mainactivity.jsonclasses
+package com.example.mainactivity.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
