@@ -4,8 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.mainactivity.MessagesActivity
 import com.example.mainactivity.R
+import kotlinx.android.synthetic.main.activity_news.*
 
 class NewsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +27,8 @@ class NewsActivity : AppCompatActivity() {
         }
 
 
+
+        bottomNavigationView.setupWithNavController(newsNavHostFragment.findNavController())
 
 
     }

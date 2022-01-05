@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mainactivity.firebase.FirebaseService
 import com.example.mainactivity.models.ChatMessage
 import com.example.mainactivity.views.LatestMessageRow
 import com.google.firebase.auth.FirebaseAuth

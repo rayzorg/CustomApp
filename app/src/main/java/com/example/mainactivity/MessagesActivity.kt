@@ -30,7 +30,7 @@ class MessagesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(com.example.mainactivity.R.layout.activity_messages)
+        setContentView(R.layout.activity_messages)
         verifyUserLoggedIn()
         fetchCurrentUser()
 
@@ -40,13 +40,13 @@ class MessagesActivity : AppCompatActivity() {
 
         }
 
-        val toolbar:Toolbar=findViewById(com.example.mainactivity.R.id.toolbar_main)
+        val toolbar:Toolbar=findViewById(R.id.toolbar_main)
         setSupportActionBar(toolbar)
         supportActionBar!!.title=""
 
 
-        val tabLayout=findViewById<TabLayout>(com.example.mainactivity.R.id.tab_layout)
-        val viewPager2=findViewById<ViewPager2>(com.example.mainactivity.R.id.view_page)
+        val tabLayout=findViewById<TabLayout>(R.id.tab_layout)
+        val viewPager2=findViewById<ViewPager2>(R.id.view_page)
         val adapter=ViewPagerAdapter(supportFragmentManager,lifecycle)
 
         viewPager2.adapter=adapter
@@ -140,7 +140,7 @@ class MessagesActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-       menuInflater.inflate(com.example.mainactivity.R.menu.nav_menu,menu)
+       menuInflater.inflate(R.menu.nav_menu,menu)
         return true
     }
 
