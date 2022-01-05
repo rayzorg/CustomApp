@@ -5,17 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.mainactivity.MessagesActivity
 import com.example.mainactivity.R
+import com.example.mainactivity.RegisterActivity
 import com.example.mainactivity.db.ArticleDatabase
 import com.example.mainactivity.repository.NewsRepository
 import com.example.mainactivity.views.NewsViewModel
 import kotlinx.android.synthetic.main.activity_news.*
-
 class NewsActivity : AppCompatActivity() {
+
     lateinit var viewModel: NewsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
@@ -26,18 +29,17 @@ class NewsActivity : AppCompatActivity() {
         supportActionBar!!.title="Nieuws"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
-            val intent= Intent(this@NewsActivity, MessagesActivity::class.java)
+            val intent=Intent(this@NewsActivity, MessagesActivity::class.java)
             startActivity(intent)
             finish()
         }
-        val repository=NewsRepository(ArticleDatabase(this))
-        val viewModelProviderFactory=NewsViewModelProviderFactory(repository)
-        viewModel= ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
 
+        val newsRepository = NewsRepository(ArticleDatabase(this))
+        val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
 
-
-        bottomNavigationView.setupWithNavController(newsNavHostFragment.findNavController())
-
-
+        val navHostFragment= supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
+        val navController= navHostFragment.navController
+        bottomNavigationView.setupWithNavController(navController)
     }
 }
