@@ -100,7 +100,7 @@ class SearchFragment : Fragment() {
         var firebaseUserId=FirebaseAuth.getInstance().currentUser!!.uid
 
         val queryUsers= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users")
-            .orderByChild("search")
+            .orderByChild("username")
             .startAt(str)
             .endAt(str + "\uf8ff")
 

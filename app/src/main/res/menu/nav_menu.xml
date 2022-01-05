@@ -10,5 +10,11 @@
         app:showAsAction="never">
 
     </item>
+    <item android:id="@+id/niewsAfdeling"
+        android:title="Artikels"
+        app:showAsAction="ifRoom">
+
+    </item>
+
 
 </menu>
