@@ -11,10 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.mainactivity.adapter.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import android.R
-import android.graphics.ImageDecoder
-import androidx.core.net.toUri
 import com.example.mainactivity.models.User
+import com.example.mainactivity.newsui.NewsActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso

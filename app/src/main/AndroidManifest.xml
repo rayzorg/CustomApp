@@ -10,8 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBarClean">
         <activity
-            android:name=".NewsActivity"
-            android:exported="false" />
+            android:name=".newsui.NewsActivity"
+            android:exported="false"
+            android:parentActivityName=".MessagesActivity"></activity>/>
         <activity
             android:name=".ChatLogActivity"
             android:exported="false"
