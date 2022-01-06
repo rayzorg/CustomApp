@@ -5,21 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
+import androidx.navigation.fragment.navArgs
 import com.example.mainactivity.R
 import com.example.mainactivity.views.NewsViewModel
+import kotlinx.android.synthetic.main.fragment_article.*
 
 
-class ArticleFragment : Fragment() {
+class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     lateinit var viewModel: NewsViewModel
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        viewModel=(activity as NewsActivity).viewModel
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_article, container, false)
+    val args: ArticleFragmentArgs by navArgs()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = (activity as NewsActivity).viewModel
+        val article = args.article
+        webView.apply {
+            webViewClient = WebViewClient()
+            loadUrl(article.url)
+        }
     }
-
-
 }
