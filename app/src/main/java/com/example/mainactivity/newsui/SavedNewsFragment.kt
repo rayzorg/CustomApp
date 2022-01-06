@@ -5,11 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mainactivity.R
 import com.example.mainactivity.adapter.NewsAdapter
 import com.example.mainactivity.views.NewsViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 import kotlinx.android.synthetic.main.fragment_saved_news.*
 
@@ -34,6 +38,37 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                 bundle
             )
         }
+        val itemTouchCallback= object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position= viewHolder.adapterPosition
+                val article=newsAdapter.differ.currentList[position]
+                viewModel.deleteArticle(article)
+                Snackbar.make(view,"Artikel verwijderd",Snackbar.LENGTH_LONG).apply {
+                    setAction("Terug"){
+                        viewModel.saveArticle(article)
+                    }
+                    show()
+                }
+            }
+
+        }
+        ItemTouchHelper(itemTouchCallback).apply {
+            attachToRecyclerView(rvSavedNews)
+        }
+        viewModel.getSavednews().observe(viewLifecycleOwner, Observer { articles->
+            newsAdapter.differ.submitList(articles)
+        })
     }
 
     private fun setupRecyclerView(){
