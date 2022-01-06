@@ -1,14 +1,11 @@
 package com.example.mainactivity.newsui
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,9 +24,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
-class SearchNewsFragment :  Fragment(R.layout.fragment_search_news) {
-
+class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     lateinit var viewModel: NewsViewModel
     val TAG = "SearchNewsFragment"
@@ -61,37 +56,35 @@ class SearchNewsFragment :  Fragment(R.layout.fragment_search_news) {
                     }
                 }
             }
-
-
         }
-        viewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-                    response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles.toList())
-                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
-                        isLastPage = viewModel.searchNewsPage == totalPages
-                        if(isLastPage){
-                            rvSearchNews.setPadding(0,0,0,0)
+        viewModel.searchNews.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        response.data?.let { newsResponse ->
+                            newsAdapter.differ.submitList(newsResponse.articles.toList())
+                            val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                            isLastPage = viewModel.searchNewsPage == totalPages
+                            if (isLastPage) {
+                                rvSearchNews.setPadding(0, 0, 0, 0)
+                            }
                         }
                     }
-                }
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        Toast.makeText(activity,"Error opgetreden: $message", Toast.LENGTH_SHORT).show()
-
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.message?.let { message ->
+                            Toast.makeText(activity, "Error opgetreden: $message", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    is Resource.Loading -> {
+                        showProgressBar()
                     }
                 }
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
             }
-        })
-
+        )
     }
-
 
     private fun hideProgressBar() {
         paginationProgressBar.visibility = View.INVISIBLE
@@ -136,13 +129,12 @@ class SearchNewsFragment :  Fragment(R.layout.fragment_search_news) {
         }
     }
 
-        private fun setupRecyclerView() {
-            newsAdapter = NewsAdapter()
-            rvSearchNews.apply {
-                adapter = newsAdapter
-                layoutManager = LinearLayoutManager(activity)
-                addOnScrollListener(this@SearchNewsFragment.scrollListener)
-            }
+    private fun setupRecyclerView() {
+        newsAdapter = NewsAdapter()
+        rvSearchNews.apply {
+            adapter = newsAdapter
+            layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(this@SearchNewsFragment.scrollListener)
         }
-
     }
+}

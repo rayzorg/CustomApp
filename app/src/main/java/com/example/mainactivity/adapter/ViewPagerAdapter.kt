@@ -8,14 +8,14 @@ import com.example.mainactivity.ChatsFragment
 import com.example.mainactivity.SearchFragment
 import com.example.mainactivity.SettingsFragment
 
-class ViewPagerAdapter(fragmentManager:FragmentManager,lifecycle:Lifecycle)
-    :FragmentStateAdapter(fragmentManager,lifecycle) {
+class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
         return 3
     }
 
     override fun createFragment(position: Int): Fragment {
-       return when (position) {
+        return when (position) {
             0 -> {
                 ChatsFragment()
             }
@@ -25,7 +25,7 @@ class ViewPagerAdapter(fragmentManager:FragmentManager,lifecycle:Lifecycle)
             2 -> {
                 SettingsFragment()
             }
-            else->{
+            else -> {
                 Fragment()
             }
         }

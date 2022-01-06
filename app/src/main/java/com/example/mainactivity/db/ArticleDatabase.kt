@@ -9,18 +9,18 @@ import com.example.mainactivity.models.Article
     version = 1
 )
 @TypeConverters(Converters::class)
-abstract class ArticleDatabase : RoomDatabase(){
+abstract class ArticleDatabase : RoomDatabase() {
 
     abstract fun getArticleDao(): ArticleDao
 
-    companion object{
+    companion object {
         @Volatile
-        private var instance: ArticleDatabase?= null
-        private val LOCK= Any()
+        private var instance: ArticleDatabase? = null
+        private val LOCK = Any()
 
-        operator fun invoke(context: Context)= Companion.instance?: synchronized(LOCK){
-            instance?: createDatabase(context).also{
-                instance=it
+        operator fun invoke(context: Context) = Companion.instance ?: synchronized(LOCK) {
+            instance ?: createDatabase(context).also {
+                instance = it
             }
         }
 

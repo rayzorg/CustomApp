@@ -1,8 +1,8 @@
 package com.example.mainactivity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.mainactivity.models.ChatMessage
 import com.example.mainactivity.models.User
@@ -22,120 +22,105 @@ import kotlinx.android.synthetic.main.chat_to_row.view.*
 import kotlinx.android.synthetic.main.user_search_item_layout.view.*
 
 class ChatLogActivity : AppCompatActivity() {
-    val adapter=GroupAdapter<ViewHolder>()
+    val adapter = GroupAdapter<ViewHolder>()
     var toUser: User? = null
-    var firebaseUser: FirebaseUser? =null
+    var firebaseUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_log)
-        firebaseUser=FirebaseAuth.getInstance().currentUser
-        recyclerview_chatlog.adapter=adapter
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+        recyclerview_chatlog.adapter = adapter
 
-        val toolbar: Toolbar =findViewById(R.id.toolbar_chat)
+        val toolbar: Toolbar = findViewById(R.id.toolbar_chat)
         setSupportActionBar(toolbar)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
-            val intent= Intent(this@ChatLogActivity,MessagesActivity::class.java)
+            val intent = Intent(this@ChatLogActivity, MessagesActivity::class.java)
             startActivity(intent)
             finish()
         }
 
+        toUser = intent.getParcelableExtra<User>(SearchFragment.USER_KEY)
 
-        toUser=intent.getParcelableExtra<User>(SearchFragment.USER_KEY)
-
-        supportActionBar!!.title= toUser?.username
+        supportActionBar!!.title = toUser?.username
         listenForMessages()
         button_send.setOnClickListener {
             sendMessage()
-
         }
-
     }
 
     private fun listenForMessages() {
 
-        val fromId=FirebaseAuth.getInstance().uid
-        val toId=toUser?.uid
+        val fromId = FirebaseAuth.getInstance().uid
+        val toId = toUser?.uid
 
-        val messages=FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/user-messages/${fromId}/${toId}")
-        messages.addChildEventListener(object:ChildEventListener{
+        val messages = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/user-messages/$fromId/$toId")
+        messages.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(p0: DataSnapshot, previousChildName: String?) {
-               val message=p0.getValue(ChatMessage::class.java)
-                if(message != null){
+                val message = p0.getValue(ChatMessage::class.java)
+                if (message != null) {
 
-
-                    println("fromid"+message.text)
-                    if(message.fromId==FirebaseAuth.getInstance().uid){
-                        val currentUser=MessagesActivity.currentUser
-                        adapter.add(ChatFromItem(message.text,currentUser!!))
-                    }else{
+                    println("fromid" + message.text)
+                    if (message.fromId == FirebaseAuth.getInstance().uid) {
+                        val currentUser = MessagesActivity.currentUser
+                        adapter.add(ChatFromItem(message.text, currentUser!!))
+                    } else {
 
                         adapter.add(ChatToItem(message.text, toUser!!))
                     }
                 }
-                recyclerview_chatlog.scrollToPosition(adapter.itemCount -1)
+                recyclerview_chatlog.scrollToPosition(adapter.itemCount - 1)
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
             }
 
             override fun onCancelled(error: DatabaseError) {
-
             }
-
         })
     }
     private fun sendMessage() {
 
-        val text=editTextSendContent.text.toString()
-        val fromId= FirebaseAuth.getInstance().uid
-        val user=intent.getParcelableExtra<User>(SearchFragment.USER_KEY)
-        val toId= user?.uid
+        val text = editTextSendContent.text.toString()
+        val fromId = FirebaseAuth.getInstance().uid
+        val user = intent.getParcelableExtra<User>(SearchFragment.USER_KEY)
+        val toId = user?.uid
 
-        val refMessages= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/user-messages/${fromId}/${toId}").push()
-        val refToMessages= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/user-messages/${toId}/${fromId}").push()
+        val refMessages = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/user-messages/$fromId/$toId").push()
+        val refToMessages = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/user-messages/$toId/$fromId").push()
 
-        val chatMessage= ChatMessage(refMessages.key!!,text, fromId!!, toId!!,System.currentTimeMillis()/1000)
-
+        val chatMessage = ChatMessage(refMessages.key!!, text, fromId!!, toId!!, System.currentTimeMillis() / 1000)
 
         refMessages.setValue(chatMessage)
             .addOnSuccessListener {
                 editTextSendContent.text.clear()
-                recyclerview_chatlog.scrollToPosition(adapter.itemCount -1)
-
+                recyclerview_chatlog.scrollToPosition(adapter.itemCount - 1)
             }
         refToMessages.setValue(chatMessage)
 
-        val latestrefMessages= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/latest-messages/${fromId}/${toId}")
+        val latestrefMessages = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/latest-messages/$fromId/$toId")
         latestrefMessages.setValue(chatMessage)
-        val latestrefToMessages= FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/latest-messages/${toId}/${fromId}")
+        val latestrefToMessages = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/latest-messages/$toId/$fromId")
         latestrefToMessages.setValue(chatMessage)
-
-
     }
-    companion object{
-        val TAG="chatlog"
+    companion object {
+        val TAG = "chatlog"
     }
-
-
 }
 
-class ChatFromItem(val text:String,val user: User): Item<ViewHolder>(){
+class ChatFromItem(val text: String, val user: User) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.textViewRow.text=text
+        viewHolder.itemView.textViewRow.text = text
 
-        val uri=user.profileImageUrl
+        val uri = user.profileImageUrl
         Picasso.with(viewHolder.itemView.textViewRow.context).load(uri).into(viewHolder.itemView.imageViewFrom)
     }
 
@@ -143,13 +128,12 @@ class ChatFromItem(val text:String,val user: User): Item<ViewHolder>(){
         return R.layout.chat_from_row
     }
 }
-class ChatToItem(val text:String,val user:User): Item<ViewHolder>(){
+class ChatToItem(val text: String, val user: User) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        viewHolder.itemView.textViewTo.text=text
-        val uri=user.profileImageUrl
+        viewHolder.itemView.textViewTo.text = text
+        val uri = user.profileImageUrl
         Picasso.with(viewHolder.itemView.textViewTo.context).load(uri).into(viewHolder.itemView.imageViewTo)
-
     }
 
     override fun getLayout(): Int {

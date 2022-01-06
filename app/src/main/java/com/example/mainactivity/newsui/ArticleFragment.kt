@@ -1,18 +1,14 @@
 package com.example.mainactivity.newsui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebViewClient
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.mainactivity.R
 import com.example.mainactivity.views.NewsViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_article.*
-
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
@@ -29,7 +25,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         }
         fab.setOnClickListener {
             viewModel.saveArticle(article)
-            Snackbar.make(view,"Artikel opgeslagen",Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, "Artikel opgeslagen", Snackbar.LENGTH_SHORT).show()
         }
     }
 }

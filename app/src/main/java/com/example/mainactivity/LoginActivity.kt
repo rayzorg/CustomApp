@@ -9,24 +9,23 @@ import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity :AppCompatActivity(){
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val toolbar: Toolbar =findViewById(R.id.toolbar_login)
+        val toolbar: Toolbar = findViewById(R.id.toolbar_login)
         setSupportActionBar(toolbar)
-        supportActionBar!!.title="Inloggen"
+        supportActionBar!!.title = "Inloggen"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
-            val intent=Intent(this@LoginActivity,RegisterActivity::class.java)
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-
         buttonInloggen.setOnClickListener {
-           inloggen()
+            inloggen()
         }
 
         noAccountTextView.setOnClickListener {
@@ -34,25 +33,27 @@ class LoginActivity :AppCompatActivity(){
         }
     }
 
-    private fun inloggen (){
-        val email=emailLogin.text.toString()
-        val password=passwordLogin.text.toString()
+    private fun inloggen() {
+        val email = emailLogin.text.toString()
+        val password = passwordLogin.text.toString()
 
-        if(email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this,"Gelieve alle velden in te vullen",Toast.LENGTH_SHORT).show()
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Gelieve alle velden in te vullen", Toast.LENGTH_SHORT).show()
             return
         }
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                if(!it.isSuccessful) return@addOnCompleteListener
-                val intent= Intent(this,MessagesActivity::class.java)
-                intent.flags= Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                if (!it.isSuccessful) return@addOnCompleteListener
+                val intent = Intent(this, MessagesActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-                Log.d("LoginActivity","User ingelogd: ${it.result.user?.uid}")
+                Log.d("LoginActivity", "User ingelogd: ${it.result.user?.uid}")
             }
-            .addOnFailureListener{
-                Toast.makeText(this,"Niet gelukt om in te loggen :${it.message} ",
-                    Toast.LENGTH_SHORT).show()
+            .addOnFailureListener {
+                Toast.makeText(
+                    this, "Niet gelukt om in te loggen :${it.message} ",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 }

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 
 }
 apply plugin: 'kotlin-android-extensions'
@@ -8,6 +9,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 androidExtensions{
     experimental = true
 }
