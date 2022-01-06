@@ -17,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 import kotlinx.android.synthetic.main.fragment_saved_news.*
 
-
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     lateinit var viewModel: NewsViewModel
@@ -26,22 +25,22 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewModel
-
         setupRecyclerView()
 
         newsAdapter.setOnItemClickListener {
-            val bundle=Bundle().apply {
-                putSerializable("article",it)
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
             }
             findNavController().navigate(
                 R.id.action_savedNewsFragment_to_articleFragment,
                 bundle
             )
         }
-        val itemTouchCallback= object : ItemTouchHelper.SimpleCallback(
+
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        ){
+        ) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -51,32 +50,32 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position= viewHolder.adapterPosition
-                val article=newsAdapter.differ.currentList[position]
+                val position = viewHolder.adapterPosition
+                val article = newsAdapter.differ.currentList[position]
                 viewModel.deleteArticle(article)
-                Snackbar.make(view,"Artikel verwijderd",Snackbar.LENGTH_LONG).apply {
-                    setAction("Terug"){
+                Snackbar.make(view, "Successfully deleted article", Snackbar.LENGTH_LONG).apply {
+                    setAction("Undo") {
                         viewModel.saveArticle(article)
                     }
                     show()
                 }
             }
-
         }
-        ItemTouchHelper(itemTouchCallback).apply {
+
+        ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(rvSavedNews)
         }
-        viewModel.getSavednews().observe(viewLifecycleOwner, Observer { articles->
+
+        viewModel.getSavednews().observe(viewLifecycleOwner, Observer { articles ->
             newsAdapter.differ.submitList(articles)
         })
     }
 
-    private fun setupRecyclerView(){
-        newsAdapter= NewsAdapter()
+    private fun setupRecyclerView() {
+        newsAdapter = NewsAdapter()
         rvSavedNews.apply {
-            adapter=newsAdapter
-            layoutManager= LinearLayoutManager(activity)
+            adapter = newsAdapter
+            layoutManager = LinearLayoutManager(activity)
         }
     }
-
 }
