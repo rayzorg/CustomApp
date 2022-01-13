@@ -46,7 +46,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         }
 
         var task: Job? = null
-        etSearch.addTextChangedListener { edit ->
+        EditTextSearch.addTextChangedListener { edit ->
             task?.cancel()
             task = MainScope().launch {
                 delay(SEARCH_NEWS_DELAY)
@@ -68,7 +68,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                             val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
                             isLastPage = viewModel.searchNewsPage == totalPages
                             if (isLastPage) {
-                                rvSearchNews.setPadding(0, 0, 0, 0)
+                                RecyclerViewSearchNews.setPadding(0, 0, 0, 0)
                             }
                         }
                     }
@@ -116,7 +116,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             val shouldPagina =
                 isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginnin && isTotalMoreThanVisible && isScrolling
             if (shouldPagina) {
-                viewModel.searchNews(etSearch.text.toString())
+                viewModel.searchNews(EditTextSearch.text.toString())
                 isScrolling = false
             }
         }
@@ -131,7 +131,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
-        rvSearchNews.apply {
+        RecyclerViewSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@SearchNewsFragment.scrollListener)

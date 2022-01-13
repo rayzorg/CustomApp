@@ -47,7 +47,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                             val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
                             isLastPage = viewModel.breakingNewsPage == totalPages
                             if (isLastPage) {
-                                rvBreakingNews.setPadding(0, 0, 0, 0)
+                                RecyclerViewBreakingNews.setPadding(0, 0, 0, 0)
                             }
                         }
                     }
@@ -76,7 +76,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
-        rvBreakingNews.apply {
+        RecyclerViewBreakingNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@BreakingNewsFragment.scrollListener)
