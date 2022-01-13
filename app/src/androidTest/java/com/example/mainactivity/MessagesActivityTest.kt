@@ -1,6 +1,9 @@
 package com.example.mainactivity
 
+import android.content.Intent
 import android.widget.EditText
+import androidx.core.content.ContextCompat.startActivity
+import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.example.mainactivity.models.User
@@ -33,6 +36,9 @@ class MessagesActivityTest{
     private lateinit var authResultTask: Task<AuthResult>
     @Mock
     private lateinit var authResultTaskLogin: Task<AuthResult>
+
+
+    @get:Rule var activityScenarioRule = activityScenarioRule<MessagesActivity>()
     @get:Rule
     val mActivityTestRule: ActivityTestRule<MessagesActivity> = ActivityTestRule(
         MessagesActivity::class.java
@@ -75,6 +81,4 @@ class MessagesActivityTest{
             }
         )
     }
-
-
 }

@@ -105,4 +105,5 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.4"
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'org.mockito:mockito-android:2.24.5'
+    testImplementation 'androidx.test:core:1.2.0'
 }
