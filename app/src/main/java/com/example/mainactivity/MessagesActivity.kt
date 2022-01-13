@@ -132,7 +132,6 @@ class MessagesActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
         menuInflater.inflate(R.menu.nav_menu, menu)
         return true
     }
