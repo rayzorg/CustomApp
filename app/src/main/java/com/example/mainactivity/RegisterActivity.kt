@@ -25,13 +25,12 @@ class RegisterActivity : AppCompatActivity() {
             val data: Intent? = result.data
             selectedImage = data?.data
             try {
-                    val source: ImageDecoder.Source =
-                        ImageDecoder.createSource(contentResolver, selectedImage!!)
-                    val bitmap = ImageDecoder.decodeBitmap(source)
+                val source: ImageDecoder.Source =
+                    ImageDecoder.createSource(contentResolver, selectedImage!!)
+                val bitmap = ImageDecoder.decodeBitmap(source)
 
-                    selectPhotoImageView.setImageBitmap(bitmap)
-                    pictureButton.alpha = 0f
-
+                selectPhotoImageView.setImageBitmap(bitmap)
+                pictureButton.alpha = 0f
             } catch (e: IOException) {
                 Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
             }
@@ -121,4 +120,3 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 }
-

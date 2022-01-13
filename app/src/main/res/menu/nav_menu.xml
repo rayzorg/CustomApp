@@ -6,12 +6,12 @@
 
 
     <item android:id="@+id/menu_sign_out"
-        android:title="Uitloggen"
+        android:title="@string/uitloggen"
         app:showAsAction="never">
 
     </item>
     <item android:id="@+id/niewsAfdeling"
-        android:title="Artikels"
+        android:title="@string/artikels"
         app:showAsAction="ifRoom">
 
     </item>

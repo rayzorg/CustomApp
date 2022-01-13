@@ -8,7 +8,7 @@ import org.junit.runners.JUnit4
 import java.lang.Exception
 
 @RunWith(JUnit4::class)
-class NewsActivityTest{
+class NewsActivityTest {
     private var newsActivity: NewsActivity? = null
     @get:Rule
     val mActivityTestRule: ActivityTestRule<NewsActivity> = ActivityTestRule(

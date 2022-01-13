@@ -2,4 +2,28 @@
     <string name="app_name">ChatApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_message">Enter Message</string>
+    <string name="verzenden">Verzenden</string>
+    <string name="nog_geen_account">Nog geen account?</string>
+    <string name="inloggen">Inloggen</string>
+    <string name="email">Email</string>
+    <string name="wachtwoord">Wachtwoord</string>
+    <string name="registreren">Registreren</string>
+    <string name="al_een_account">Al een account ?</string>
+    <string name="naam">Naam</string>
+    <string name="foto_kiezen">Foto kiezen</string>
+    <string name="wijzigen">Wijzigen</string>
+    <string name="wijzig_naam">Wijzig naam</string>
+    <string name="source">SOURCE</string>
+    <string name="title">TITLE</string>
+    <string name="description">DESCRIPTION</string>
+    <string name="published_at">PUBLISHED AT</string>
+    <string name="usernaam">usernaam</string>
+    <string name="latest_message">latest message</string>
+    <string name="user_naam">user naam</string>
+    <string name="breaking_news">Breaking News</string>
+    <string name="opgeslagen">Opgeslagen</string>
+    <string name="zoeken">Zoeken</string>
+    <string name="uitloggen">Uitloggen</string>
+    <string name="artikels">Artikels</string>
 </resources>

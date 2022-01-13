@@ -32,7 +32,7 @@ class RegisterActivityTest {
     @Mock
     private lateinit var authResultTask: Task<AuthResult>
     @get:Rule
-     val mActivityTestRule: ActivityTestRule<RegisterActivity> = ActivityTestRule(
+    val mActivityTestRule: ActivityTestRule<RegisterActivity> = ActivityTestRule(
         RegisterActivity::class.java
     )
 
@@ -63,54 +63,54 @@ class RegisterActivityTest {
     }
     @Test
     fun testUserCreated() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync{
-                val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
-                val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
-                val username = registerActivity!!.findViewById<EditText>(R.id.usernameRegister)
-                email.setText("Email@email.com")
-                pass.setText("123456")
-                username.setText("easy")
-                val mockUser = User("hvhdftrdfdgdfgfdgdg", username.text.toString(), "fsdfdsf", username.text.toString())
-                val uid = firebaseAuth?.uid
-                val ref = fireDatabase?.getReference("/users/$uid")
-                MockitoAnnotations.initMocks(this)
-                Mockito.`when`(
-                    firebaseAuth?.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
-                )
-                    .thenReturn(authResultTask)
-                authResultTask.addOnCompleteListener {
-                    ref?.setValue(mockUser)
-                }
-                ref?.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val user: User? = snapshot.getValue(User::class.java)
-                        assertEquals(user?.username, mockUser.username)
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                    }
-                })
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
+            val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
+            val username = registerActivity!!.findViewById<EditText>(R.id.usernameRegister)
+            email.setText("Email@email.com")
+            pass.setText("123456")
+            username.setText("easy")
+            val mockUser = User("hvhdftrdfdgdfgfdgdg", username.text.toString(), "fsdfdsf", username.text.toString())
+            val uid = firebaseAuth?.uid
+            val ref = fireDatabase?.getReference("/users/$uid")
+            MockitoAnnotations.initMocks(this)
+            Mockito.`when`(
+                firebaseAuth?.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
+            )
+                .thenReturn(authResultTask)
+            authResultTask.addOnCompleteListener {
+                ref?.setValue(mockUser)
             }
+            ref?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user: User? = snapshot.getValue(User::class.java)
+                    assertEquals(user?.username, mockUser.username)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
     }
     @Test
     fun testUserNotCreated() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync{
-                val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
-                val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
-                email.setText("Email")
-                pass.setText("123456")
-                val uid = FirebaseAuth.getInstance().uid
-                val ref = fireDatabase?.getReference("/users/$uid")
-                MockitoAnnotations.initMocks(this)
-                Mockito.`when`(
-                    firebaseAuth?.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
-                )
-                    .thenReturn(authResultTask)
-                authResultTask.addOnCompleteListener {
-                    if (!it.isSuccessful) {
-                        assertNull(ref)
-                        return@addOnCompleteListener
-                    }
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
+            val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
+            email.setText("Email")
+            pass.setText("123456")
+            val uid = FirebaseAuth.getInstance().uid
+            val ref = fireDatabase?.getReference("/users/$uid")
+            MockitoAnnotations.initMocks(this)
+            Mockito.`when`(
+                firebaseAuth?.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
+            )
+                .thenReturn(authResultTask)
+            authResultTask.addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    assertNull(ref)
+                    return@addOnCompleteListener
                 }
             }
+        }
     }
 }

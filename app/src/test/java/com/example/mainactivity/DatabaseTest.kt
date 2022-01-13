@@ -16,8 +16,6 @@ import org.junit.runner.RunWith
 import java.io.IOException
 import org.junit.Assert.*
 
-
-
 @RunWith(AndroidJUnit4::class)
 class DatabaseTest {
     private lateinit var articleDao: ArticleDao
@@ -43,7 +41,7 @@ class DatabaseTest {
         val article = Article(123, "Rayan", "fdgdfgdf", "fdgdgffgdf", "2011", source, "dsfsdfsd", "dfgdfg", "sdsqds")
 
         articleDao.upsert(article)
-        val one= articleDao.getArticles(1)
+        val one = articleDao.getArticles(1)
 
         assertNotNull(one.size)
     }
@@ -55,9 +53,9 @@ class DatabaseTest {
 
         articleDao.upsert(article)
         articleDao.deleteArticle(article)
-        val one= articleDao.getArticles(1)
+        val one = articleDao.getArticles(1)
 
-        assertEquals(one.size,0)
+        assertEquals(one.size, 0)
     }
     @Test
     @Throws(Exception::class)
@@ -69,9 +67,8 @@ class DatabaseTest {
         articleDao.upsert(article)
         articleDao.upsert(article2)
 
-        val one= articleDao.getArticles(2)
+        val one = articleDao.getArticles(2)
 
-        assertEquals(one.size,2)
+        assertEquals(one.size, 2)
     }
-
 }

@@ -113,13 +113,13 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
     private fun hasInternetConnection(): Boolean {
         val conManager = getApplication<NewsApplication>().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-            val activeNet = conManager.activeNetwork ?: return false
-            val capabilities = conManager.getNetworkCapabilities(activeNet) ?: return false
-            return when {
-                capabilities.hasTransport(TRANSPORT_WIFI) -> true
-                capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-                capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
+        val activeNet = conManager.activeNetwork ?: return false
+        val capabilities = conManager.getNetworkCapabilities(activeNet) ?: return false
+        return when {
+            capabilities.hasTransport(TRANSPORT_WIFI) -> true
+            capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
+            capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
     }
 }

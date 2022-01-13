@@ -23,7 +23,7 @@ import org.mockito.MockitoAnnotations
 import java.lang.Exception
 
 @RunWith(JUnit4::class)
-class MessagesActivityTest{
+class MessagesActivityTest {
     private var messagesActivity: MessagesActivity? = null
     @Mock
     private var firebaseAuth: FirebaseAuth? = null
@@ -33,7 +33,6 @@ class MessagesActivityTest{
     private lateinit var authResultTask: Task<AuthResult>
     @Mock
     private lateinit var authResultTaskLogin: Task<AuthResult>
-
 
     @get:Rule var activityScenarioRule = activityScenarioRule<MessagesActivity>()
     @get:Rule
@@ -47,33 +46,34 @@ class MessagesActivityTest{
     }
     @Test
     fun testUserLogin() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync{
-                val mockUser = User("hvhdftrdfdgdfgfdgdg", "easy", "fsdfdsf", "easy")
-                val uid = firebaseAuth?.uid
-                val ref = fireDatabase?.getReference("/users/$uid")
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val mockUser = User("hvhdftrdfdgdfgfdgdg", "easy", "fsdfdsf", "easy")
+            val uid = firebaseAuth?.uid
+            val ref = fireDatabase?.getReference("/users/$uid")
 
-                MockitoAnnotations.initMocks(this)
-                Mockito.`when`(
-                    firebaseAuth?.createUserWithEmailAndPassword("email@email.com", "123456"))
-                    .thenReturn(authResultTask)
-                authResultTask.addOnCompleteListener {
-                    ref?.setValue(mockUser)
-                }
-                Mockito.`when`(
-                    firebaseAuth?.signInWithEmailAndPassword(
-                        "email@email.com", "123456"
-                    )
-                )
-                    .thenReturn(authResultTaskLogin)
-
-                ref?.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val user: User? = snapshot.getValue(User::class.java)
-                        assertEquals(user?.uid, mockUser.uid)
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                    }
-                })
+            MockitoAnnotations.initMocks(this)
+            Mockito.`when`(
+                firebaseAuth?.createUserWithEmailAndPassword("email@email.com", "123456")
+            )
+                .thenReturn(authResultTask)
+            authResultTask.addOnCompleteListener {
+                ref?.setValue(mockUser)
             }
+            Mockito.`when`(
+                firebaseAuth?.signInWithEmailAndPassword(
+                    "email@email.com", "123456"
+                )
+            )
+                .thenReturn(authResultTaskLogin)
+
+            ref?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user: User? = snapshot.getValue(User::class.java)
+                    assertEquals(user?.uid, mockUser.uid)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
     }
 }

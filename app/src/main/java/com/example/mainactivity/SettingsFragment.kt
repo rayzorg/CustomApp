@@ -33,16 +33,15 @@ class SettingsFragment : Fragment() {
             val data: Intent? = result.data
             selectedImage = data?.data
             try {
-                    val source: ImageDecoder.Source =
-                        ImageDecoder.createSource(activity?.contentResolver!!, selectedImage!!)
-                    val bitmap = ImageDecoder.decodeBitmap(source)
+                val source: ImageDecoder.Source =
+                    ImageDecoder.createSource(activity?.contentResolver!!, selectedImage!!)
+                val bitmap = ImageDecoder.decodeBitmap(source)
 
-                    val imageUser: ImageView = view?.findViewById(R.id.imageViewUserSettings)!!
-                    val buttonPicture: Button = view?.findViewById(R.id.buttonChangePicture)!!
-                    imageUser.setImageBitmap(bitmap)
+                val imageUser: ImageView = view?.findViewById(R.id.imageViewUserSettings)!!
+                val buttonPicture: Button = view?.findViewById(R.id.buttonChangePicture)!!
+                imageUser.setImageBitmap(bitmap)
 
-                    buttonPicture.alpha = 0f
-
+                buttonPicture.alpha = 0f
             } catch (e: IOException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             }

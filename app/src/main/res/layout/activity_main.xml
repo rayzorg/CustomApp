@@ -33,7 +33,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/rounded_photo_login_register"
-        android:text="Foto kiezen"
+        android:text="@string/foto_kiezen"
         android:textColor="@android:color/black"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,13 +50,15 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/rounded_text_login_register"
         android:ems="10"
-        android:hint="Naam"
+        android:hint="@string/naam"
         android:inputType="textPersonName"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pictureButton" />
+        app:layout_constraintTop_toBottomOf="@+id/pictureButton"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/emailRegister"
@@ -65,12 +67,14 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_text_login_register"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="@+id/usernameRegister"
         app:layout_constraintStart_toStartOf="@+id/usernameRegister"
-        app:layout_constraintTop_toBottomOf="@+id/usernameRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameRegister"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/passwordRegister"
@@ -79,12 +83,14 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_text_login_register"
         android:ems="10"
-        android:hint="Wachtwoord"
+        android:hint="@string/wachtwoord"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/emailRegister"
         app:layout_constraintStart_toStartOf="@+id/emailRegister"
-        app:layout_constraintTop_toBottomOf="@+id/emailRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/emailRegister"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/buttonRegister"
@@ -92,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_button"
-        android:text="Registreren"
+        android:text="@string/registreren"
         app:backgroundTint="#88C0ED"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="@+id/passwordRegister"
@@ -105,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
-        android:text="Al een account ?"
+        android:text="@string/al_een_account"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="@+id/buttonRegister"
         app:layout_constraintStart_toStartOf="@+id/buttonRegister"

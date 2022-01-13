@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
@@ -33,13 +32,15 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/rounded_text_login_register"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutLogin"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/passwordLogin"
@@ -48,12 +49,14 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_text_login_register"
         android:ems="10"
-        android:hint="Wachtwoord"
+        android:hint="@string/wachtwoord"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/emailLogin"
         app:layout_constraintStart_toStartOf="@+id/emailLogin"
-        app:layout_constraintTop_toBottomOf="@+id/emailLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/emailLogin"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/buttonInloggen"
@@ -63,17 +66,16 @@
         android:background="@drawable/rounded_button"
         app:backgroundTint="#88C0ED"
         android:textColor="@android:color/black"
-        android:text="Inloggen"
+        android:text="@string/inloggen"
         app:layout_constraintEnd_toEndOf="@+id/passwordLogin"
         app:layout_constraintStart_toStartOf="@+id/passwordLogin"
         app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
-
     <TextView
         android:id="@+id/noAccountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Nog geen account?"
+        android:text="@string/nog_geen_account"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="@+id/buttonInloggen"
         app:layout_constraintStart_toStartOf="@+id/buttonInloggen"

@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Naam"
+        android:text="@string/naam"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/rounded_photo"
-        android:text="Foto kiezen"
+        android:text="@string/foto_kiezen"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -43,7 +43,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_button"
         app:backgroundTint="#88C0ED"
-        android:text="Wijzigen"
+        android:text="@string/wijzigen"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,16 +59,18 @@
         android:background="@drawable/rounded_text"
         android:backgroundTint="#88C0ED"
         android:ems="10"
-        android:hint="Wijzig naam "
+        android:hint="@string/wijzig_naam"
         android:inputType="textPersonName"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textColor="#FBF9F9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNameSettings"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.2"
+        android:autofillHints="" />
 
 
     <de.hdodenhof.circleimageview.CircleImageView

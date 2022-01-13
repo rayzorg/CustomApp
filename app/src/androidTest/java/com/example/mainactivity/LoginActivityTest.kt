@@ -40,83 +40,83 @@ class LoginActivityTest {
 
     @Test
     fun testEmailPasswordNotEmpty() {
-        getInstrumentation().runOnMainSync{
-                val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
-                val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
-                email.setText("Email@email.com")
-                pass.setText("123456")
-                assertEquals(email.text.toString(), "Email@email.com")
-                assertEquals(pass.text.toString(), "123456")
-            }
+        getInstrumentation().runOnMainSync {
+            val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
+            val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
+            email.setText("Email@email.com")
+            pass.setText("123456")
+            assertEquals(email.text.toString(), "Email@email.com")
+            assertEquals(pass.text.toString(), "123456")
+        }
     }
     @Test
     fun testEmailPasswordEmpty() {
-        getInstrumentation().runOnMainSync{
-                val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
-                val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
-                assertEquals(email.text.toString(), "")
-                assertEquals(pass.text.toString(), "")
-            }
+        getInstrumentation().runOnMainSync {
+            val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
+            val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
+            assertEquals(email.text.toString(), "")
+            assertEquals(pass.text.toString(), "")
+        }
     }
     @Test
     fun testUserLogin() {
-        getInstrumentation().runOnMainSync{
-                val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
-                val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
-                email.setText("Email@email.com")
-                pass.setText("123456")
+        getInstrumentation().runOnMainSync {
+            val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
+            val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
+            email.setText("Email@email.com")
+            pass.setText("123456")
 
-                val mockUser = User("hvhdftrdfdgdfgfdgdg", "easy", "fsdfdsf", "easy")
-                val uid = firebaseAuth?.uid
-                val ref = fireDatabase?.getReference("/users/$uid")
+            val mockUser = User("hvhdftrdfdgdfgfdgdg", "easy", "fsdfdsf", "easy")
+            val uid = firebaseAuth?.uid
+            val ref = fireDatabase?.getReference("/users/$uid")
 
-                MockitoAnnotations.initMocks(this)
-                `when`(
-                    firebaseAuth?.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
-                )
-                    .thenReturn(authResultTask)
-                authResultTask.addOnCompleteListener {
-                    ref?.setValue(mockUser)
-                }
-                `when`(firebaseAuth?.signInWithEmailAndPassword(email.text.toString(), pass.text.toString()))
-                    .thenReturn(authResultTaskLogin)
-
-                ref?.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val user: User? = snapshot.getValue(User::class.java)
-                        assertEquals(user?.uid, mockUser.uid)
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                    }
-                })
+            MockitoAnnotations.initMocks(this)
+            `when`(
+                firebaseAuth?.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
+            )
+                .thenReturn(authResultTask)
+            authResultTask.addOnCompleteListener {
+                ref?.setValue(mockUser)
             }
+            `when`(firebaseAuth?.signInWithEmailAndPassword(email.text.toString(), pass.text.toString()))
+                .thenReturn(authResultTaskLogin)
+
+            ref?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user: User? = snapshot.getValue(User::class.java)
+                    assertEquals(user?.uid, mockUser.uid)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
     }
     @Test
     fun testUserNotExist() {
-        getInstrumentation().runOnMainSync{
-                val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
-                val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
-                email.setText("wade@thor.com")
-                pass.setText("123456")
+        getInstrumentation().runOnMainSync {
+            val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
+            val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
+            email.setText("wade@thor.com")
+            pass.setText("123456")
 
-                val mockUser = User("hvhdgdg", "easy", "fsdfdsf", "easy")
-                val uid = firebaseAuth?.uid
-                val ref = fireDatabase?.getReference("/users/$uid")
+            val mockUser = User("hvhdgdg", "easy", "fsdfdsf", "easy")
+            val uid = firebaseAuth?.uid
+            val ref = fireDatabase?.getReference("/users/$uid")
 
-                MockitoAnnotations.initMocks(this)
-                `when`(firebaseAuth?.signInWithEmailAndPassword(email.text.toString(), pass.text.toString()))
-                    .thenReturn(authResultTaskLogin)
+            MockitoAnnotations.initMocks(this)
+            `when`(firebaseAuth?.signInWithEmailAndPassword(email.text.toString(), pass.text.toString()))
+                .thenReturn(authResultTaskLogin)
 
-                ref?.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            val user: User? = snapshot.getValue(User::class.java)
-                            assertNotEquals(user?.username, mockUser.username)
-                        }
+            ref?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val user: User? = snapshot.getValue(User::class.java)
+                        assertNotEquals(user?.username, mockUser.username)
                     }
-                    override fun onCancelled(error: DatabaseError) {
-                    }
-                })
-            }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
     }
 }
