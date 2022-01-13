@@ -18,7 +18,7 @@ import org.junit.Assert.*
 import org.mockito.Mockito.`when`
 
 class LoginActivityTest {
-    var loginActivity: LoginActivity? = null
+    private var loginActivity: LoginActivity? = null
     @Mock
     private var firebaseAuth: FirebaseAuth? = null
     @Mock
@@ -28,7 +28,7 @@ class LoginActivityTest {
     @Mock
     private lateinit var authResultTaskLogin: Task<AuthResult>
     @get:Rule
-    public val mActivityTestRule: ActivityTestRule<LoginActivity> = ActivityTestRule(
+    val mActivityTestRule: ActivityTestRule<LoginActivity> = ActivityTestRule(
         LoginActivity::class.java
     )
 
@@ -40,8 +40,7 @@ class LoginActivityTest {
 
     @Test
     fun testEmailPasswordNotEmpty() {
-        getInstrumentation().runOnMainSync(
-            Runnable {
+        getInstrumentation().runOnMainSync{
                 val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
                 val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
                 email.setText("Email@email.com")
@@ -49,23 +48,19 @@ class LoginActivityTest {
                 assertEquals(email.text.toString(), "Email@email.com")
                 assertEquals(pass.text.toString(), "123456")
             }
-        )
     }
     @Test
     fun testEmailPasswordEmpty() {
-        getInstrumentation().runOnMainSync(
-            Runnable {
+        getInstrumentation().runOnMainSync{
                 val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
                 val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
                 assertEquals(email.text.toString(), "")
                 assertEquals(pass.text.toString(), "")
             }
-        )
     }
     @Test
     fun testUserLogin() {
-        getInstrumentation().runOnMainSync(
-            Runnable {
+        getInstrumentation().runOnMainSync{
                 val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
                 val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
                 email.setText("Email@email.com")
@@ -95,12 +90,10 @@ class LoginActivityTest {
                     }
                 })
             }
-        )
     }
     @Test
     fun testUserNotExist() {
-        getInstrumentation().runOnMainSync(
-            Runnable {
+        getInstrumentation().runOnMainSync{
                 val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
                 val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
                 email.setText("wade@thor.com")
@@ -125,6 +118,5 @@ class LoginActivityTest {
                     }
                 })
             }
-        )
     }
 }

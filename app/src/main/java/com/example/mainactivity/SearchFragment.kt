@@ -20,8 +20,6 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.activity_messages.*
-import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.user_search_item_layout.view.*
 
 class SearchFragment : Fragment() {
@@ -34,8 +32,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_search, container, false)
         searchEdit = view.findViewById(R.id.searchUsers)
         mUsers = ArrayList()
@@ -56,10 +53,10 @@ class SearchFragment : Fragment() {
         return view
     }
     companion object {
-        val USER_KEY = "USER_KEY"
+        const val USER_KEY = "USER_KEY"
     }
     private fun fetchUsers() {
-        var firebaseUserId = FirebaseAuth.getInstance().currentUser!!.uid
+        val firebaseUserId = FirebaseAuth.getInstance().currentUser!!.uid
         val refUsers = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users")
         refUsers.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
@@ -67,7 +64,7 @@ class SearchFragment : Fragment() {
                 if (searchEdit!!.text.toString() == "") {
                     for (snapshot in p0.children) {
                         val user: User? = snapshot.getValue(User::class.java)
-                        if (!(user!!.uid).equals(firebaseUserId)) {
+                        if ((user!!.uid) != firebaseUserId) {
                             adapter.add(UserItem(user))
                         }
                     }
@@ -88,7 +85,7 @@ class SearchFragment : Fragment() {
         })
     }
     private fun searchForUsers(str: String) {
-        var firebaseUserId = FirebaseAuth.getInstance().currentUser!!.uid
+        val firebaseUserId = FirebaseAuth.getInstance().currentUser!!.uid
 
         val queryUsers = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users")
             .orderByChild("username")
@@ -100,7 +97,7 @@ class SearchFragment : Fragment() {
                 val adapter = GroupAdapter<ViewHolder>()
                 for (snapshot in p0.children) {
                     val user: User? = snapshot.getValue(User::class.java)
-                    if (!(user!!.uid).equals(firebaseUserId)) {
+                    if ((user!!.uid) != firebaseUserId) {
                         adapter.add(UserItem(user))
                     }
                 }
@@ -124,7 +121,7 @@ class UserItem(val user: User) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         viewHolder.itemView.username_user.text = user.username
-        Picasso.with(viewHolder.itemView.username_user.context).load(user!!.profileImageUrl).into(viewHolder.itemView.profile_image_user)
+        Picasso.with(viewHolder.itemView.username_user.context).load(user.profileImageUrl).into(viewHolder.itemView.profile_image_user)
     }
 
     override fun getLayout(): Int {

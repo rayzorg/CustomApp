@@ -4,9 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +17,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_messages.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.io.IOException
 import java.util.*
@@ -29,28 +24,15 @@ import kotlin.collections.HashMap
 
 class SettingsFragment : Fragment() {
 
-    var refUsers: DatabaseReference? = null
-    var firebaseUser: FirebaseUser? = null
+    private var refUsers: DatabaseReference? = null
+    private var firebaseUser: FirebaseUser? = null
     var currentUser: User? = null
-    var selectedImage: Uri? = null
-    var launchSomeActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var selectedImage: Uri? = null
+    private var launchSomeActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
-            val uri = data?.data
             selectedImage = data?.data
             try {
-                if (Build.VERSION.SDK_INT < 29) {
-                    val bitmap = MediaStore.Images.Media.getBitmap(
-                        activity?.contentResolver,
-                        selectedImage
-                    )
-
-                    val cirleImage: CircleImageView? = view?.findViewById(R.id.imageViewUserSettings)
-
-                    val buttonPicture: Button = view?.findViewById(R.id.buttonChangePicture)!!
-                    cirleImage?.setImageBitmap(bitmap)
-                    buttonPicture.alpha = 0f
-                } else {
                     val source: ImageDecoder.Source =
                         ImageDecoder.createSource(activity?.contentResolver!!, selectedImage!!)
                     val bitmap = ImageDecoder.decodeBitmap(source)
@@ -60,7 +42,7 @@ class SettingsFragment : Fragment() {
                     imageUser.setImageBitmap(bitmap)
 
                     buttonPicture.alpha = 0f
-                }
+
             } catch (e: IOException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             }
@@ -71,7 +53,7 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_settings, container, false)
 
         fetchCurrentUser()
@@ -90,7 +72,7 @@ class SettingsFragment : Fragment() {
                             val user: User? = snapshot.getValue(User::class.java)
                             textviewNaam.text = user!!.username
 
-                            Picasso.with(view.context).load(user!!.profileImageUrl).into(imageUser)
+                            Picasso.with(view.context).load(user.profileImageUrl).into(imageUser)
                         }
                     }
 
@@ -123,10 +105,10 @@ class SettingsFragment : Fragment() {
 
         val hashMap = HashMap<String, String>()
 
-        hashMap.put("username", editTextChangeName.text.toString())
-        hashMap.put("search", editTextChangeName.text.toString())
+        hashMap["username"] = editTextChangeName.text.toString()
+        hashMap["search"] = editTextChangeName.text.toString()
 
-        if (!editTextChangeName.text.isEmpty()) {
+        if (editTextChangeName.text.isNotEmpty()) {
             refUsers?.updateChildren(hashMap as Map<String, Any>)?.addOnSuccessListener {
 
                 Toast.makeText(view?.context, "Naam geupdate", Toast.LENGTH_SHORT).show()
@@ -154,7 +136,7 @@ class SettingsFragment : Fragment() {
                 ref.downloadUrl.addOnSuccessListener {
                     Toast.makeText(view?.context, "file location: $it", Toast.LENGTH_SHORT).show()
 
-                    hashMap.put("profileImageUrl", it.toString())
+                    hashMap["profileImageUrl"] = it.toString()
                     refUsers?.updateChildren(hashMap as Map<String, Any>)?.addOnSuccessListener {
 
                         Toast.makeText(view?.context, "user updated", Toast.LENGTH_SHORT).show()

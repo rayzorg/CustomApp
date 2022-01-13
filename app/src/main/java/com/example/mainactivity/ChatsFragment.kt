@@ -20,32 +20,20 @@ import com.xwray.groupie.ViewHolder
 class ChatsFragment : Fragment() {
 
     private var recyclerView: RecyclerView? = null
-    val adapter = GroupAdapter<ViewHolder>()
+    private val adapter = GroupAdapter<ViewHolder>()
     val latestMessagesMap = HashMap<String, ChatMessage>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        // SharedPreferences pref=getShared
-        // FirebaseService.sharedPref= context?.getSharedPreferences("sharedPref",Context.MODE_PRIVATE)
-        val view: View = inflater.inflate(R.layout.fragment_chats, container, false)
-        //  FirebaseMessaging.getInstance().token.addOnSuccessListener {
-        //     FirebaseService.token=it
-        // }
-        // recyclerView= view?.findViewById(R.id.recyclerview_latest_messages)
-        // val textview :TextView=view?.findViewById(R.id.textViewLatestMessage)
-        // recyclerView!!.adapter=adapter
-        // recyclerView!!.addItemDecoration(DividerItemDecoration(textview.context,DividerItemDecoration.VERTICAL))
-        // listenForLatestMessages()
-        return view
+    ): View {
+
+        return inflater.inflate(R.layout.fragment_chats, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view?.findViewById(R.id.recyclerview_latest_messages)
-        // val textview :TextView=view?.findViewById(R.id.textViewUsernameLatestMessage)
+        recyclerView = view.findViewById(R.id.recyclerview_latest_messages)
         recyclerView!!.adapter = adapter
         adapter.setOnItemClickListener { item, view ->
             val intent = Intent(view.context, ChatLogActivity::class.java)

@@ -1,8 +1,5 @@
 package com.example.mainactivity
 
-import android.content.Intent
-import android.widget.EditText
-import androidx.core.content.ContextCompat.startActivity
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
@@ -27,7 +24,7 @@ import java.lang.Exception
 
 @RunWith(JUnit4::class)
 class MessagesActivityTest{
-    var messagesActivity: MessagesActivity? = null
+    private var messagesActivity: MessagesActivity? = null
     @Mock
     private var firebaseAuth: FirebaseAuth? = null
     @Mock
@@ -50,8 +47,7 @@ class MessagesActivityTest{
     }
     @Test
     fun testUserLogin() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(
-            Runnable {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync{
                 val mockUser = User("hvhdftrdfdgdfgfdgdg", "easy", "fsdfdsf", "easy")
                 val uid = firebaseAuth?.uid
                 val ref = fireDatabase?.getReference("/users/$uid")
@@ -79,6 +75,5 @@ class MessagesActivityTest{
                     }
                 })
             }
-        )
     }
 }

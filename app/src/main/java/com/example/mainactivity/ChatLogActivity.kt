@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.user_search_item_layout.view.*
 class ChatLogActivity : AppCompatActivity() {
     val adapter = GroupAdapter<ViewHolder>()
     var toUser: User? = null
-    var firebaseUser: FirebaseUser? = null
+    private var firebaseUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +42,7 @@ class ChatLogActivity : AppCompatActivity() {
             finish()
         }
 
-        toUser = intent.getParcelableExtra<User>(SearchFragment.USER_KEY)
+        toUser = intent.getParcelableExtra(SearchFragment.USER_KEY)
 
         supportActionBar!!.title = toUser?.username
         listenForMessages()
@@ -110,9 +110,6 @@ class ChatLogActivity : AppCompatActivity() {
         latestrefMessages.setValue(chatMessage)
         val latestrefToMessages = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/latest-messages/$toId/$fromId")
         latestrefToMessages.setValue(chatMessage)
-    }
-    companion object {
-        val TAG = "chatlog"
     }
 }
 

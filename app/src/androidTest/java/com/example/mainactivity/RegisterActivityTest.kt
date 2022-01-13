@@ -11,7 +11,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +24,7 @@ import org.mockito.MockitoAnnotations
 
 @RunWith(JUnit4::class)
 class RegisterActivityTest {
-    var registerActivity: RegisterActivity? = null
+    private var registerActivity: RegisterActivity? = null
     @Mock
     private var firebaseAuth: FirebaseAuth? = null
     @Mock
@@ -33,7 +32,7 @@ class RegisterActivityTest {
     @Mock
     private lateinit var authResultTask: Task<AuthResult>
     @get:Rule
-    public val mActivityTestRule: ActivityTestRule<RegisterActivity> = ActivityTestRule(
+     val mActivityTestRule: ActivityTestRule<RegisterActivity> = ActivityTestRule(
         RegisterActivity::class.java
     )
 
@@ -44,32 +43,27 @@ class RegisterActivityTest {
     }
     @Test
     fun testEmailPasswordNotEmpty() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(
-            Runnable {
-                val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
-                val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
-                email.setText("Email@email.com")
-                pass.setText("123456")
-                Assert.assertEquals(email.text.toString(), "Email@email.com")
-                Assert.assertEquals(pass.text.toString(), "123456")
-            }
-        )
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
+            val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
+            email.setText("Email@email.com")
+            pass.setText("123456")
+            assertEquals(email.text.toString(), "Email@email.com")
+            assertEquals(pass.text.toString(), "123456")
+        }
     }
     @Test
     fun testEmailPasswordEmpty() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(
-            Runnable {
-                val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
-                val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
-                Assert.assertEquals(email.text.toString(), "")
-                Assert.assertEquals(pass.text.toString(), "")
-            }
-        )
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
+            val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
+            assertEquals(email.text.toString(), "")
+            assertEquals(pass.text.toString(), "")
+        }
     }
     @Test
     fun testUserCreated() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(
-            Runnable {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync{
                 val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
                 val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
                 val username = registerActivity!!.findViewById<EditText>(R.id.usernameRegister)
@@ -96,12 +90,10 @@ class RegisterActivityTest {
                     }
                 })
             }
-        )
     }
     @Test
     fun testUserNotCreated() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(
-            Runnable {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync{
                 val email = registerActivity!!.findViewById<EditText>(R.id.emailRegister)
                 val pass = registerActivity!!.findViewById<EditText>(R.id.passwordRegister)
                 email.setText("Email")
@@ -120,6 +112,5 @@ class RegisterActivityTest {
                     }
                 }
             }
-        )
     }
 }

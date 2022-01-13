@@ -1,18 +1,16 @@
 package com.example.mainactivity
 
-import android.R.attr.data
 import android.app.Activity
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.mainactivity.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -21,29 +19,19 @@ import java.io.IOException
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
-    var selectedImage: Uri? = null
-    var launchSomeActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var selectedImage: Uri? = null
+    private var launchSomeActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
-            val uri = data?.data
             selectedImage = data?.data
             try {
-                if (Build.VERSION.SDK_INT < 29) {
-                    val bitmap = MediaStore.Images.Media.getBitmap(
-                        contentResolver,
-                        selectedImage
-                    )
-
-                    selectPhotoImageView.setImageBitmap(bitmap)
-                    pictureButton.alpha = 0f
-                } else {
                     val source: ImageDecoder.Source =
                         ImageDecoder.createSource(contentResolver, selectedImage!!)
                     val bitmap = ImageDecoder.decodeBitmap(source)
 
                     selectPhotoImageView.setImageBitmap(bitmap)
                     pictureButton.alpha = 0f
-                }
+
             } catch (e: IOException) {
                 Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
             }
@@ -59,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
         supportActionBar!!.title = "Registreren"
 
         buttonRegister.setOnClickListener {
-            Register()
+            register()
         }
         alreadyAccounttextView.setOnClickListener {
             goToLogin()
@@ -70,7 +58,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun openYourActivity() {
+    private fun openYourActivity() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         launchSomeActivity.launch(intent)
@@ -80,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
-    private fun Register() {
+    private fun register() {
         val email = emailRegister.text.toString()
         val password = passwordRegister.text.toString()
 
@@ -88,18 +76,12 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "Gelieve alle velden in te vullen", Toast.LENGTH_SHORT).show()
             return
         }
-        Log.d("RegisterActivity", "email is" + email)
-        Log.d("RegisterActivity", "password is" + password)
-
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (!it.isSuccessful) return@addOnCompleteListener
-
-                Log.d("RegisterActivity", "User created: ${it.result.user?.uid}")
                 uploadImage()
             }
             .addOnFailureListener {
-                Log.d("RegisterActivity", "Niet gelukt om gebruiker aan te maken :${it.message} ")
                 Toast.makeText(this, "Niet gelukt om gebruiker aan te maken :${it.message} ", Toast.LENGTH_SHORT).show()
             }
     }
@@ -122,11 +104,10 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
     private fun saveUserToDatabase(imageUrl: String) {
-        val status = "offline"
         val uid = FirebaseAuth.getInstance().uid
         val ref = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/users/$uid")
 
-        val user = User(uid!!, usernameRegister.text.toString(), imageUrl, usernameRegister.text.toString().lowercase(), status)
+        val user = User(uid!!, usernameRegister.text.toString(), imageUrl, usernameRegister.text.toString().lowercase())
         ref.setValue(user)
             .addOnSuccessListener {
                 Toast.makeText(this, "save user to database", Toast.LENGTH_SHORT).show()
@@ -141,4 +122,3 @@ class RegisterActivity : AppCompatActivity() {
     }
 }
 
-class User(val uid: String, val username: String, val profileImageUrl: String, val search: String, val status: String)
