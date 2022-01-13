@@ -12,7 +12,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.latest_messages_row.view.*
 
-class LatestMessageRow(val chatMessage: ChatMessage) : Item<ViewHolder>() {
+class LatestMessageRow(private val chatMessage: ChatMessage) : Item<ViewHolder>() {
     var partnerUser: User? = null
 
     override fun bind(viewHolder: ViewHolder, position: Int) {

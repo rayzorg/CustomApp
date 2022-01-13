@@ -3,7 +3,6 @@ package com.example.mainactivity.newsui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,7 +64,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
         viewModel.getSavednews().observe(
             viewLifecycleOwner,
-            Observer { articles ->
+           { articles ->
                 newsAdapter.differ.submitList(articles)
             }
         )
