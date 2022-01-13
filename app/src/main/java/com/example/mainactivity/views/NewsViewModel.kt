@@ -82,7 +82,7 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
         try {
             if (hasInternetConnection()) {
                 val response = newsRepository.searchNews(searchQuery, searchNewsPage)
-                searchNews.postValue(handleSearchNewsResponse(response))
+                searchNews.postValue(handleSearchNewsResponse(response!!))
             } else {
                 searchNews.postValue(Resource.Error("Geen internet"))
             }
@@ -98,7 +98,7 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
         try {
             if (hasInternetConnection()) {
                 val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
-                breakingNews.postValue(handleBreakingNewsResponse(response))
+                breakingNews.postValue(handleBreakingNewsResponse(response!!))
             } else {
                 breakingNews.postValue(Resource.Error("Geen internet"))
             }
