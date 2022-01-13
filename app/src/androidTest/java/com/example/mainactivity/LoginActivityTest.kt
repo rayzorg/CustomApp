@@ -4,7 +4,6 @@ import androidx.test.rule.ActivityTestRule
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -20,16 +19,14 @@ import org.mockito.Mockito.`when`
 
 class LoginActivityTest {
     var loginActivity: LoginActivity? = null
-    var refUsers: DatabaseReference? = null
-
     @Mock
-    private lateinit var firebaseAuth: FirebaseAuth
+    private var firebaseAuth: FirebaseAuth? = null
+    @Mock
+    private var fireDatabase: FirebaseDatabase? = null
     @Mock
     private lateinit var authResultTask: Task<AuthResult>
     @Mock
-    private lateinit var mockResult: AuthResult
-    @Mock
-    private lateinit var mockFirebaseUser: FirebaseUser
+    private lateinit var authResultTaskLogin: Task<AuthResult>
     @get:Rule
     public val mActivityTestRule: ActivityTestRule<LoginActivity> = ActivityTestRule(
         LoginActivity::class.java
@@ -71,25 +68,28 @@ class LoginActivityTest {
             Runnable {
                 val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
                 val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
-                email.setText("thor@thor.com")
+                email.setText("Email@email.com")
                 pass.setText("123456")
-                refUsers = FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("users").child("ZtpdrC8KOlWrExMi3TrlYVcU7Af2")
 
-                val mockUser = User("ZtpdrC8KOlWrExMi3TrlYVcU7Af2", "voldemort", "fsdfdsf", "voldemort")
+                val mockUser = User("hvhdftrdfdgdfgfdgdg", "easy", "fsdfdsf", "easy")
+                val uid = firebaseAuth?.uid
+                val ref = fireDatabase?.getReference("/users/$uid")
+
                 MockitoAnnotations.initMocks(this)
-
-                `when`(firebaseAuth.signInWithEmailAndPassword(email.text.toString(), pass.text.toString()))
+                `when`(
+                    firebaseAuth?.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
+                )
                     .thenReturn(authResultTask)
+                authResultTask.addOnCompleteListener {
+                    ref?.setValue(mockUser)
+                }
+                `when`(firebaseAuth?.signInWithEmailAndPassword(email.text.toString(), pass.text.toString()))
+                    .thenReturn(authResultTaskLogin)
 
-                `when`(mockResult.user)
-                    .thenReturn(mockFirebaseUser)
-
-                refUsers!!.addListenerForSingleValueEvent(object : ValueEventListener {
+                ref?.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            val user: User? = snapshot.getValue(User::class.java)
-                            assertEquals(user?.uid, mockUser.uid)
-                        }
+                        val user: User? = snapshot.getValue(User::class.java)
+                        assertEquals(user?.uid, mockUser.uid)
                     }
                     override fun onCancelled(error: DatabaseError) {
                     }
@@ -101,38 +101,26 @@ class LoginActivityTest {
     fun testUserNotExist() {
         getInstrumentation().runOnMainSync(
             Runnable {
-
                 val email = loginActivity!!.findViewById<EditText>(R.id.emailLogin)
                 val pass = loginActivity!!.findViewById<EditText>(R.id.passwordLogin)
                 email.setText("wade@thor.com")
                 pass.setText("123456")
-                refUsers =
-                    FirebaseDatabase.getInstance("https://chatappcustomandroid-default-rtdb.europe-west1.firebasedatabase.app/").reference.child(
-                        "users"
-                    ).child("ZtpdrC8KOlWrExMi3TrlYVcU7Af2")
 
-                val mockUser = User("pdrC8KOlWrExMi3TrlYVcU7Af2", "voldemort", "fsdfdsf", "voldemort")
+                val mockUser = User("hvhdgdg", "easy", "fsdfdsf", "easy")
+                val uid = firebaseAuth?.uid
+                val ref = fireDatabase?.getReference("/users/$uid")
+
                 MockitoAnnotations.initMocks(this)
+                `when`(firebaseAuth?.signInWithEmailAndPassword(email.text.toString(), pass.text.toString()))
+                    .thenReturn(authResultTaskLogin)
 
-                `when`(
-                    firebaseAuth.signInWithEmailAndPassword(
-                        email.text.toString(),
-                        pass.text.toString()
-                    )
-                )
-                    .thenReturn(authResultTask)
-
-                `when`(mockResult.user)
-                    .thenReturn(mockFirebaseUser)
-
-                refUsers!!.addListenerForSingleValueEvent(object : ValueEventListener {
+                ref?.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
                             val user: User? = snapshot.getValue(User::class.java)
-                            assertNotEquals(user?.uid, mockUser.uid)
+                            assertNotEquals(user?.username, mockUser.username)
                         }
                     }
-
                     override fun onCancelled(error: DatabaseError) {
                     }
                 })
