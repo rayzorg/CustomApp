@@ -6,12 +6,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.viewpager2.widget.ViewPager2
-import com.example.mainactivity.adapter.ViewPagerAdapter
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.mainactivity.models.User
 import com.example.mainactivity.newsui.NewsActivity
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -20,8 +18,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseError
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_messages.*
+
 
 class MessagesActivity : AppCompatActivity() {
     companion object {
@@ -46,26 +44,9 @@ class MessagesActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = ""
 
-        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
-        val viewPager2 = findViewById<ViewPager2>(R.id.view_page)
-        val adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
-
-        viewPager2.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = "Chats"
-                }
-                1 -> {
-                    tab.text = "Zoeken"
-                }
-                2 -> {
-                    tab.text = "Instellingen"
-                }
-            }
-        }.attach()
-
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.newsNavHostFragment2) as NavHostFragment
+        val navController = navHostFragment.navController
+        bottomNavigationViewChat.setupWithNavController(navController)
         if (firebaseUser != null) {
             refUsers!!.addValueEventListener(
                 (
@@ -84,10 +65,6 @@ class MessagesActivity : AppCompatActivity() {
                     }
                     )
             )
-        }
-
-        profile_image.setOnClickListener {
-            tab_layout.getTabAt(2)?.select()
         }
     }
 
