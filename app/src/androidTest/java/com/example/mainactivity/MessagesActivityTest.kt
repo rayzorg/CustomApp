@@ -41,7 +41,7 @@ class MessagesActivityTest {
     @Mock
     private lateinit var authResultTaskLogin: Task<AuthResult>
     private val menuContentItemIds = intArrayOf(
-        R.id.breakingNewsFragment , R.id.savedNewsFragment, R.id.searchNewsFragment
+        R.id.breakingNewsFragment, R.id.savedNewsFragment, R.id.searchNewsFragment
     )
     private var menuStringContent: Map<Int, String>? = null
 
@@ -105,7 +105,7 @@ class MessagesActivityTest {
     @SmallTest
     fun testAddItemsWithoutMenuInflation() {
         val navigation = BottomNavigationView(mActivityTestRule.activity)
-        //mActivityTestRule.activity.setContentView(navigation)
+        // mActivityTestRule.activity.setContentView(navigation)
         navigation.menu.add("Item1")
         navigation.menu.add("Item2")
         assertEquals(2, navigation.menu.size())

@@ -14,7 +14,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-
 @RunWith(JUnit4::class)
 class NewsActivityTest {
     private var newsActivity: NewsActivity? = null
@@ -23,12 +22,11 @@ class NewsActivityTest {
         NewsActivity::class.java
     )
     private val menuContentItemIds = intArrayOf(
-       com.example.mainactivity.R.id.breakingNewsFragment , com.example.mainactivity.R.id.savedNewsFragment, com.example.mainactivity.R.id.searchNewsFragment
+        com.example.mainactivity.R.id.breakingNewsFragment, com.example.mainactivity.R.id.savedNewsFragment, com.example.mainactivity.R.id.searchNewsFragment
     )
     private var menuStringContent: Map<Int, String>? = null
 
     private var bottomNavigation: BottomNavigationView? = null
-
 
     @Before
     @Throws(Exception::class)
@@ -51,7 +49,7 @@ class NewsActivityTest {
     @SmallTest
     fun testAddItemsWithoutMenuInflation() {
         val navigation = BottomNavigationView(mActivityTestRule.activity)
-       // mActivityTestRule.activity.setContentView(navigation)
+        // mActivityTestRule.activity.setContentView(navigation)
         navigation.menu.add("Item1")
         navigation.menu.add("Item2")
         assertEquals(2, navigation.menu.size())
